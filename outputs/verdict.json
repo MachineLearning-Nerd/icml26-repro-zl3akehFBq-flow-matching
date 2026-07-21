@@ -1,0 +1,35 @@
+{
+  "c1_kl_convergence": {
+    "passed": true,
+    "kls": [
+      0.006663189641632001,
+      0.001138353661059223,
+      0.004424143912846923
+    ]
+  },
+  "c2_relaxed": {
+    "passed": true
+  },
+  "c3_nonuniform": {
+    "passed": true,
+    "kl_uniform": 0.004236263590461767,
+    "kl_nonuniform": 0.045159526514608174
+  },
+  "c4_wasserstein": {
+    "passed": true,
+    "w2s": [
+      0.017480905105169187,
+      0.0027473689231575166,
+      0.009931460463544081
+    ]
+  },
+  "c5_independent": {
+    "passed": true,
+    "kl": 0.002523990193758428
+  },
+  "c6_dimension": {
+    "passed": true,
+    "kl_lowrank": 0.008153757523083026,
+    "kl_fullrank": 0.0043126213687354475
+  }
+}

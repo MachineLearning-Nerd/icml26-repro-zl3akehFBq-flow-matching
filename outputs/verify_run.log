@@ -1,0 +1,11 @@
+
+==============================================================================
+CLAIM 1 (Theorem 1): constant-step KL convergence to target
+==============================================================================
+Traceback (most recent call last):
+  File "/home/dineshai/Drives/Code/AllCode/ReproduceICML/papers/icml26-repro-zl3akehFBq-flow-matching/repro/src/verify_fm.py", line 22, in <module>
+    X = F.flow_match_gaussian(mu, Sig, N_PART, steps, dt=1.0/steps, schedule="uniform", seed=steps)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dineshai/Drives/Code/AllCode/ReproduceICML/papers/icml26-repro-zl3akehFBq-flow-matching/repro/src/flowmatch.py", line 27, in flow_match_gaussian
+    from numpy.linalg import sqrtm
+ImportError: cannot import name 'sqrtm' from 'numpy.linalg' (/home/dineshai/Drives/Code/AllCode/ReproduceICML/papers/icml26-repro-zl3akehFBq-flow-matching/.venv/lib/python3.12/site-packages/numpy/linalg/__init__.py)
