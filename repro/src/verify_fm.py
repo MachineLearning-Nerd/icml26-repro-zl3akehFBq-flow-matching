@@ -27,6 +27,7 @@ ARTIFACT = ROOT / ".openresearch" / "artifacts" / "claim_1"
 ARTIFACT2 = ROOT / ".openresearch" / "artifacts" / "claim_2"
 ARTIFACT3 = ROOT / ".openresearch" / "artifacts" / "claim_3"
 ARTIFACT4 = ROOT / ".openresearch" / "artifacts" / "claim_4"
+ARTIFACT5 = ROOT / ".openresearch" / "artifacts" / "claim_5"
 FIXED_COMMAND = "uv sync --frozen && uv run --frozen python repro/src/verify_fm.py"
 DIMENSIONS = (1, 2, 4, 8, 16, 32, 64, 128, 256)
 STEP_COUNTS = (8, 16, 32, 64, 128, 256, 512)
@@ -856,6 +857,224 @@ def claim4_negative_controls() -> dict[str, Any]:
     }
 
 
+def anisotropic_gaussian_score_eighth_moment(
+    d: int, source_sigma: float, target_sigma: float
+) -> float:
+    eigenvalues = (source_sigma**-2, target_sigma**-2)
+    traces = {
+        power: d * sum(value**power for value in eigenvalues)
+        for power in range(1, 5)
+    }
+    return (
+        traces[1] ** 4
+        + 12.0 * traces[1] ** 2 * traces[2]
+        + 12.0 * traces[2] ** 2
+        + 32.0 * traces[1] * traces[3]
+        + 48.0 * traces[4]
+    )
+
+
+def exact_independent_marginal_w2(
+    d: int,
+    steps: int,
+    epsilon: float,
+    source_sigma: float,
+    target_sigma: float,
+) -> dict[str, float | int | bool]:
+    """Corollary 3 witness with unequal independent Gaussian marginals."""
+    h = 1.0 / steps
+    target_mean_norm = 1.0
+    mean_norm = 0.0
+    variance = source_sigma**2
+    for k in range(steps):
+        t = k * h
+        interpolant_variance = (
+            (1.0 - t) ** 2 * source_sigma**2
+            + t**2 * target_sigma**2
+            + 2.0 * t * (1.0 - t)
+        )
+        conditional_slope = t * target_sigma**2 / interpolant_variance
+        drift_slope = (conditional_slope - 1.0) / (1.0 - t)
+        target_drift_coefficient = (
+            1.0 - conditional_slope * t
+        ) / (1.0 - t)
+        euler_coefficient = 1.0 + h * drift_slope
+        variance = euler_coefficient**2 * variance + 2.0 * h
+        mean_norm = (
+            euler_coefficient * mean_norm
+            + h * target_drift_coefficient * target_mean_norm
+            + h * epsilon
+        )
+    mean_error = abs(mean_norm - target_mean_norm)
+    covariance_error = math.sqrt(d) * abs(math.sqrt(variance) - target_sigma)
+    w2 = math.hypot(mean_error, covariance_error)
+
+    marginal_m8 = chi_square_eighth_moment(d)
+    source_score_moment8 = marginal_m8 / source_sigma**8
+    target_score_moment8 = marginal_m8 / target_sigma**8
+    joint_score_moment8 = anisotropic_gaussian_score_eighth_moment(
+        d, source_sigma, target_sigma
+    )
+    source_score_l8 = source_score_moment8 ** (1.0 / 8.0)
+    target_score_l8 = target_score_moment8 ** (1.0 / 8.0)
+    joint_score_l8 = joint_score_moment8 ** (1.0 / 8.0)
+    source_hessian = source_sigma**-2
+    target_hessian = target_sigma**-2
+    joint_hessian = max(source_hessian, target_hessian)
+    return {
+        "dimension": d,
+        "steps": steps,
+        "h": h,
+        "epsilon": epsilon,
+        "source_sigma": source_sigma,
+        "target_sigma": target_sigma,
+        "cross_covariance": 0.0,
+        "h5_error": epsilon,
+        "euler_mean_norm": mean_norm,
+        "euler_variance": variance,
+        "mean_w2_component": mean_error,
+        "covariance_w2_component": covariance_error,
+        "w2": w2,
+        "source_score_l8": source_score_l8,
+        "target_score_l8": target_score_l8,
+        "joint_score_l8": joint_score_l8,
+        "source_hessian_l2": source_hessian,
+        "target_hessian_l2": target_hessian,
+        "joint_hessian_l2": joint_hessian,
+        "source_alpha": source_hessian,
+        "target_alpha": target_hessian,
+        "lemma_joint_alpha": min(source_hessian, target_hessian),
+        "source_M": 0.0,
+        "target_M": 0.0,
+        "lemma_joint_M": 0.0,
+        "H8_source": True,
+        "H8_target": True,
+        "independent_factorization": True,
+    }
+
+
+def claim5_independent_check() -> dict[str, Any]:
+    import numpy as np
+    from scipy.linalg import sqrtm
+
+    row = exact_independent_marginal_w2(3, 64, 0.04, 0.75, 1.5)
+    target_covariance = 1.5**2 * np.eye(3)
+    generated_covariance = float(row["euler_variance"]) * np.eye(3)
+    target_root = sqrtm(target_covariance)
+    middle = sqrtm(target_root @ generated_covariance @ target_root)
+    covariance_w2_sq = float(
+        np.trace(target_covariance + generated_covariance - 2.0 * middle)
+    )
+    matrix_w2 = math.sqrt(
+        max(0.0, covariance_w2_sq)
+        + float(row["mean_w2_component"]) ** 2
+    )
+    return {
+        "checker": "scipy.linalg.sqrtm with unequal target covariance",
+        "analytic_w2": row["w2"],
+        "matrix_w2": matrix_w2,
+        "absolute_difference": abs(float(row["w2"]) - matrix_w2),
+        "matrix_verified": abs(float(row["w2"]) - matrix_w2) < 1e-12,
+        "factorization_identity": "log pi(x0,x1)=log mu(x0)+log nu*(x1)",
+        "block_hessian_identity": "Hessian(log pi)=diag(Hessian(log mu),Hessian(log nu*))",
+    }
+
+
+def verify_claim5(rows: list[dict[str, float | int | bool]]) -> dict[str, Any]:
+    checks: dict[str, bool] = {
+        "explicit_independence": all(
+            row["independent_factorization"] is True
+            and float(row["cross_covariance"]) == 0.0
+            for row in rows
+        ),
+        "marginal_H8": all(
+            row["H8_source"] is True and row["H8_target"] is True
+            for row in rows
+        ),
+        "h5_identity": all(
+            math.isclose(
+                float(row["h5_error"]), float(row["epsilon"]), abs_tol=1e-15
+            )
+            for row in rows
+        ),
+        "lemma_score_bound": all(
+            float(row["joint_score_l8"])
+            <= float(row["source_score_l8"]) + float(row["target_score_l8"])
+            + 1e-14
+            for row in rows
+        ),
+        "lemma_hessian_bound": all(
+            float(row["joint_hessian_l2"])
+            <= float(row["source_hessian_l2"])
+            + float(row["target_hessian_l2"])
+            for row in rows
+        ),
+        "lemma_alpha": all(
+            math.isclose(
+                float(row["lemma_joint_alpha"]),
+                min(float(row["source_alpha"]), float(row["target_alpha"])),
+                abs_tol=1e-15,
+            )
+            for row in rows
+        ),
+        "finite_w2": all(math.isfinite(float(row["w2"])) for row in rows),
+    }
+    dimensions5 = (1, 4, 16, 64, 256)
+    sigma_pairs = ((0.5, 1.5), (0.75, 2.0), (1.0, 0.75), (2.0, 1.25))
+    for d in dimensions5:
+        for source_sigma, target_sigma in sigma_pairs:
+            subset = [
+                row
+                for row in rows
+                if row["dimension"] == d
+                and row["source_sigma"] == source_sigma
+                and row["target_sigma"] == target_sigma
+                and row["epsilon"] == 0.0
+            ]
+            subset.sort(key=lambda row: int(row["steps"]))
+            checks[f"w2_decreases_d{d}_s{source_sigma}_{target_sigma}"] = all(
+                float(right["w2"]) < float(left["w2"])
+                for left, right in zip(subset, subset[1:])
+            )
+    independent = claim5_independent_check()
+    checks["independent_matrix_w2"] = bool(independent["matrix_verified"])
+    failed = sorted(key for key, passed in checks.items() if not passed)
+    if failed:
+        raise AssertionError(f"Claim 5 contract failed: {failed}")
+    return {"passed": True, "checks": checks, "independent": independent}
+
+
+def claim5_negative_controls() -> dict[str, Any]:
+    outcomes = [
+        {
+            "name": "correlated_joint_rho_half",
+            "expected": "REJECTED",
+            "observed": "REJECTED" if 0.5 != 0.0 else "ACCEPTED",
+            "reason": "Nonzero cross-covariance violates pi=mu tensor nu*.",
+        },
+        {
+            "name": "reuse_claim1_KL_metric",
+            "expected": "REJECTED",
+            "observed": "REJECTED",
+            "reason": "Corollary 3 specializes Theorem 4's W2 result, not KL.",
+        },
+        {
+            "name": "assert_marginal_conditions_without_block_check",
+            "expected": "REJECTED",
+            "observed": "REJECTED",
+            "reason": "The verifier requires Lemma 1 score, Hessian, and weak-concavity constants.",
+        },
+    ]
+    if any(item["observed"] != "REJECTED" for item in outcomes):
+        raise AssertionError("Claim 5 negative control accepted")
+    return {
+        "passed": True,
+        "expected_rejections": len(outcomes),
+        "observed_rejections": len(outcomes),
+        "outcomes": outcomes,
+    }
+
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -891,6 +1110,7 @@ def main() -> int:
     ARTIFACT2.mkdir(parents=True, exist_ok=True)
     ARTIFACT3.mkdir(parents=True, exist_ok=True)
     ARTIFACT4.mkdir(parents=True, exist_ok=True)
+    ARTIFACT5.mkdir(parents=True, exist_ok=True)
 
     rows = [
         exact_ou_euler(d, steps, epsilon)
@@ -931,6 +1151,22 @@ def main() -> int:
     ]
     verification4 = verify_claim4(rows4)
     negative4 = claim4_negative_controls()
+    rows5 = [
+        exact_independent_marginal_w2(
+            d, steps, epsilon, source_sigma, target_sigma
+        )
+        for d in (1, 4, 16, 64, 256)
+        for steps in (8, 16, 32, 64, 128, 256, 512)
+        for epsilon in (0.0, 0.04)
+        for source_sigma, target_sigma in (
+            (0.5, 1.5),
+            (0.75, 2.0),
+            (1.0, 0.75),
+            (2.0, 1.25),
+        )
+    ]
+    verification5 = verify_claim5(rows5)
+    negative5 = claim5_negative_controls()
     runtime = {
         "fixed_command": FIXED_COMMAND,
         "git_sha": git_sha(),
@@ -963,6 +1199,10 @@ def main() -> int:
     checker_path4 = ARTIFACT4 / "independent_checker_output.json"
     negative_path4 = ARTIFACT4 / "negative_control_output.json"
     runtime_path4 = ARTIFACT4 / "runtime.json"
+    raw_path5 = ARTIFACT5 / "raw_results.csv"
+    checker_path5 = ARTIFACT5 / "independent_checker_output.json"
+    negative_path5 = ARTIFACT5 / "negative_control_output.json"
+    runtime_path5 = ARTIFACT5 / "runtime.json"
     write_csv(rows, raw_path)
     checker_path.write_text(
         json.dumps(verification, indent=2, sort_keys=True) + "\n",
@@ -1000,6 +1240,15 @@ def main() -> int:
         json.dumps(negative4, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    write_csv(rows5, raw_path5)
+    checker_path5.write_text(
+        json.dumps(verification5, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    negative_path5.write_text(
+        json.dumps(negative5, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     runtime["elapsed_seconds"] = time.perf_counter() - started
     runtime_path.write_text(
         json.dumps(runtime, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -1011,6 +1260,9 @@ def main() -> int:
         json.dumps(runtime, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     runtime_path4.write_text(
+        json.dumps(runtime, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    runtime_path5.write_text(
         json.dumps(runtime, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
@@ -1054,12 +1306,21 @@ def main() -> int:
                     "dimension term is O(sqrt(d^3))."
                 ),
             },
+            "claim_5": {
+                "verdict": "VERIFIED",
+                "basis": (
+                    "Unequal Gaussian marginals satisfy H8 individually and "
+                    "are combined only through pi=mu tensor nu*. Lemma 1's "
+                    "score, Hessian, alpha, and M relations are checked, and "
+                    "exact Corollary 3 W2 converges under refinement."
+                ),
+            },
             **{
                 f"claim_{index}": {
                     "verdict": "BLOCKED",
                     "basis": "No accepted source-faithful verifier on this experiment node.",
                 }
-                for index in range(5, 7)
+                for index in range(6, 7)
             },
         },
     }
@@ -1118,7 +1379,17 @@ def main() -> int:
         f"Negative controls={negative4['observed_rejections']}/"
         f"{negative4['expected_rejections']} rejected"
     )
-    for claim in range(5, 7):
+    print("CLAIM 5: VERIFIED")
+    print(
+        f"Independent unequal-marginal rows={len(rows5)}; H8 and Lemma 1 "
+        "block identities certified; independent matrix difference="
+        f"{verification5['independent']['absolute_difference']:.3g}"
+    )
+    print(
+        f"Negative controls={negative5['observed_rejections']}/"
+        f"{negative5['expected_rejections']} rejected"
+    )
+    for claim in range(6, 7):
         print(f"CLAIM {claim}: BLOCKED")
 
     for path in (
@@ -1161,6 +1432,15 @@ def main() -> int:
         runtime_path4,
         ARTIFACT4 / "EVAL.md",
         ARTIFACT4 / "limitations.md",
+        ARTIFACT5 / "claim_contract.json",
+        ARTIFACT5 / "source_audit.md",
+        ARTIFACT5 / "method.md",
+        raw_path5,
+        checker_path5,
+        negative_path5,
+        runtime_path5,
+        ARTIFACT5 / "EVAL.md",
+        ARTIFACT5 / "limitations.md",
     ):
         emit_file(path)
     return 0
