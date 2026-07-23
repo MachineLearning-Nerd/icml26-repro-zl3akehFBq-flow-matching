@@ -9,9 +9,25 @@
   "verified_upload_hash_count": 63,
   "previous_judged_path_count": 17,
   "previous_non_logbook_byte_identical_count": 16,
-  "judge_status": "queued",
-  "judge_detail": "re-judging (logbook updated)",
+  "initial_queue_status": "queued",
+  "initial_queue_detail": "re-judging (logbook updated)",
   "judge_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
   "judge_status_checked_at": "2026-07-23T13:47:22+00:00",
-  "live_score_claimed": false
+  "judged_at": "2026-07-23T16:31:20+00:00",
+  "official_score": "5/12",
+  "judge_status": "judged",
+  "judge_detail": "up to date",
+  "judge_claim_verdicts": [
+    "toy",
+    "inconclusive",
+    "toy",
+    "toy",
+    "toy",
+    "toy"
+  ],
+  "second_candidate_parent_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
+  "second_candidate_evidence_run_id": "0a539277-4fa4-4894-8623-a823aeaf193b",
+  "second_candidate_evidence_git_sha": "7e3ab5c3a71ac38f1d14a4722e2abbe468fe8fd4",
+  "second_candidate_published": false,
+  "live_score_claimed_beyond_official": false
 }

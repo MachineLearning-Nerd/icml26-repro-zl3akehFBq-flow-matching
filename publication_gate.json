@@ -4,5 +4,14 @@
   "publication_gate_passed": true,
   "claims_verified": 6,
   "claims_total": 6,
-  "arxiv": "2606.16610"
+  "arxiv": "2606.16610",
+  "official_score": "5/12",
+  "current_judged_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
+  "second_candidate_evidence_run": "0a539277-4fa4-4894-8623-a823aeaf193b",
+  "second_candidate_parent_paths_preserved": 79,
+  "second_candidate_non_logbook_paths_byte_identical": 78,
+  "second_candidate_upload_paths": 10,
+  "second_candidate_delete_operations": 0,
+  "second_candidate_published": false,
+  "requires_explicit_publication_approval": true
 }

@@ -10,17 +10,17 @@ or output assessed below.
 
 | Field | Recorded value |
 | --- | --- |
-| Run ID | `83508b8b-b868-4a51-8a5e-47018b7ef0dd` |
-| Git commit cloned by runner | `a28a88e192d99c17ed6a98b633a5766d3bb2d019` |
+| Run ID | `0a539277-4fa4-4894-8623-a823aeaf193b` |
+| Git commit cloned by runner | `7e3ab5c3a71ac38f1d14a4722e2abbe468fe8fd4` |
 | Status | `done`, exit code 0 |
-| ORX duration | `1m00s` |
-| Captured stdout size | `460,987` bytes |
+| ORX duration | `50s` |
+| Captured stdout size | `476,391` bytes |
 | Hardware | local Apple arm64 CPU, 8 logical cores; no GPU |
 | Environment | Python 3.12.11; `uv.lock`; 36 resolved packages |
 | Fixed command | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` |
 
 The following is a literal excerpt from `orx logs
-83508b8b-b868-4a51-8a5e-47018b7ef0dd --head`:
+0a539277-4fa4-4894-8623-a823aeaf193b --head`:
 
 ```text
 CLAIM 1: VERIFIED
@@ -78,3 +78,13 @@ The next six pages expose representative rows, the executable formula, the
 assumption witness, independent-checker output, and deliberately failing
 control for each claim so assessment does not depend on following a file link.
 
+## Additive second-release protection
+
+The current judged parent is
+`DineshAI/zl3akehFBq@22e4c6ccfea63d39df4fd57db0ddacb2a505b040`.
+Its independently downloaded 79-path manifest has SHA-256
+`44be417b6d9a199f616fbbbf20c615e6357de7662df805e2de28690217b706df`.
+All 79 paths are present in this candidate and all 78 paths other than the
+root `logbook.json` are byte-identical. The exact next upload allowlist has
+ten UTF-8 text paths: this logbook, these seven current pages, and the two
+protected manifest/snapshot files. It contains zero deletes.

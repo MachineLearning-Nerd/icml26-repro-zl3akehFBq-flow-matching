@@ -160,3 +160,23 @@ The resulting Space revision is
 `22e4c6ccfea63d39df4fd57db0ddacb2a505b040`. The independent download matched
 all 63 uploaded path hashes, retained all 17 judged paths, and kept the 16
 non-logbook judged files byte-identical.
+
+## Judge-visible evidence repair
+
+```bash
+orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
+  --title "Judge-visible executed evidence" \
+  --parent 77a1916b-2a06-446e-befb-2fc0e847b802
+orx exp run 9daf03d6-6ccc-47ed-99da-f856a3296b54 --backend local
+orx exp wait 9daf03d6-6ccc-47ed-99da-f856a3296b54 --timeout 480
+orx logs 0a539277-4fa4-4894-8623-a823aeaf193b --head --bytes 50000
+orx logs 0a539277-4fa4-4894-8623-a823aeaf193b --bytes 20000
+orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
+  --title "Second cumulative evidence release candidate" \
+  --parent 9daf03d6-6ccc-47ed-99da-f856a3296b54
+```
+
+The executed-evidence run cloned
+`7e3ab5c3a71ac38f1d14a4722e2abbe468fe8fd4`, completed in 50 seconds, and
+captured 476,391 bytes. The second candidate remains unpublished pending its
+final regression and explicit release approval.
