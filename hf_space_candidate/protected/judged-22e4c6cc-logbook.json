@@ -8,75 +8,33 @@
     "icml2026-repro",
     "paper-zl3akehFBq"
   ],
-  "updated_at": "2026-07-23T17:37:23+00:00",
+  "updated_at": "2026-07-23T13:24:43+00:00",
   "root": {
     "slug": "index",
     "title": "Repro - Diffusion Flow Matching: Dimension-Improved KL Bounds",
     "file": "pages/index.md",
     "children": [
       {
-        "slug": "00-current-execution",
-        "title": "CURRENT executed ORX evidence",
-        "file": "pages/00-current-execution/page.md",
-        "children": []
-      },
-      {
-        "slug": "01-current-claim-1",
-        "title": "CURRENT Claim 1 — KL scaling and decomposition",
-        "file": "pages/01-current-claim-1/page.md",
-        "children": []
-      },
-      {
-        "slug": "02-current-claim-2",
-        "title": "CURRENT Claim 2 — strict relaxed-assumption witness",
-        "file": "pages/02-current-claim-2/page.md",
-        "children": []
-      },
-      {
-        "slug": "03-current-claim-3",
-        "title": "CURRENT Claim 3 — exact schedule and work",
-        "file": "pages/03-current-claim-3/page.md",
-        "children": []
-      },
-      {
-        "slug": "04-current-claim-4",
-        "title": "CURRENT Claim 4 — Wasserstein decomposition",
-        "file": "pages/04-current-claim-4/page.md",
-        "children": []
-      },
-      {
-        "slug": "05-current-claim-5",
-        "title": "CURRENT Claim 5 — independent product coupling",
-        "file": "pages/05-current-claim-5/page.md",
-        "children": []
-      },
-      {
-        "slug": "06-current-claim-6",
-        "title": "CURRENT Claim 6 — integration by parts",
-        "file": "pages/06-current-claim-6/page.md",
-        "children": []
-      },
-      {
         "slug": "overview",
-        "title": "LEGACY judged baseline — Overview",
+        "title": "Overview",
         "file": "pages/overview/page.md",
         "children": []
       },
       {
         "slug": "claims",
-        "title": "LEGACY judged baseline — Claims",
+        "title": "Claims",
         "file": "pages/claims/page.md",
         "children": []
       },
       {
         "slug": "evidence",
-        "title": "LEGACY judged baseline — ImportError evidence",
+        "title": "Evidence",
         "file": "pages/evidence/page.md",
         "children": []
       },
       {
         "slug": "verification-run",
-        "title": "LEGACY judged baseline — obsolete 3D run",
+        "title": "Verification run",
         "file": "pages/verification-run/page.md",
         "children": []
       },
@@ -106,6 +64,6 @@
             }
     ]
   },
-  "agent_view_tokens": 8500,
-  "revision": "1784809043000000000"
+  "agent_view_tokens": 1371,
+  "revision": "1784794963098560659"
 }

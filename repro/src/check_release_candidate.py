@@ -10,8 +10,12 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 ARTIFACTS = REPO / ".openresearch" / "artifacts"
 CANDIDATE = REPO / "hf_space_candidate"
-PROTECTED_MANIFEST = CANDIDATE / "protected" / "judged-af641c4e-manifest.tsv"
-PROTECTED_LOGBOOK = CANDIDATE / "protected" / "judged-logbook.json"
+ORIGINAL_PROTECTED_MANIFEST = (
+    CANDIDATE / "protected" / "judged-af641c4e-manifest.tsv"
+)
+ORIGINAL_PROTECTED_LOGBOOK = CANDIDATE / "protected" / "judged-logbook.json"
+PROTECTED_MANIFEST = CANDIDATE / "protected" / "judged-22e4c6cc-manifest.tsv"
+PROTECTED_LOGBOOK = CANDIDATE / "protected" / "judged-22e4c6cc-logbook.json"
 ALLOWLIST = CANDIDATE / "release" / "upload-allowlist.txt"
 UPLOAD_MANIFEST = CANDIDATE / "release" / "text-sha256-manifest.tsv"
 
@@ -50,8 +54,10 @@ def walk_logbook(node: dict) -> list[str]:
     return files
 
 
-def check_protected_tree() -> dict[str, int]:
-    judged = parse_manifest(PROTECTED_MANIFEST)
+def check_one_protected_tree(
+    manifest_path: Path, logbook_path: Path
+) -> dict[str, int]:
+    judged = parse_manifest(manifest_path)
     candidate_paths = {
         path.relative_to(CANDIDATE).as_posix()
         for path in CANDIDATE.rglob("*")
@@ -64,11 +70,24 @@ def check_protected_tree() -> dict[str, int]:
         if relative == "logbook.json":
             continue
         assert digest(CANDIDATE / relative) == expected, f"protected path changed: {relative}"
-    assert digest(PROTECTED_LOGBOOK) == judged["logbook.json"], "judged logbook snapshot changed"
+    assert digest(logbook_path) == judged["logbook.json"], (
+        f"judged logbook snapshot changed: {logbook_path}"
+    )
     return {
         "judged_paths": len(judged),
         "candidate_paths": len(candidate_paths),
         "byte_identical_non_logbook_paths": len(judged) - 1,
+    }
+
+
+def check_protected_tree() -> dict[str, dict[str, int]]:
+    return {
+        "original_af641c4e": check_one_protected_tree(
+            ORIGINAL_PROTECTED_MANIFEST, ORIGINAL_PROTECTED_LOGBOOK
+        ),
+        "current_22e4c6cc": check_one_protected_tree(
+            PROTECTED_MANIFEST, PROTECTED_LOGBOOK
+        ),
     }
 
 
@@ -79,11 +98,21 @@ def check_logbook() -> int:
     for relative in pages:
         assert (CANDIDATE / relative).is_file(), f"logbook page missing: {relative}"
     required_slugs = {
+        "pages/00-current-execution/page.md",
+        "pages/01-current-claim-1/page.md",
+        "pages/02-current-claim-2/page.md",
+        "pages/03-current-claim-3/page.md",
+        "pages/04-current-claim-4/page.md",
+        "pages/05-current-claim-5/page.md",
+        "pages/06-current-claim-6/page.md",
         "pages/claim-contract-results/page.md",
         "pages/release-evidence/page.md",
         "pages/release-manifest/page.md",
     }
     assert required_slugs <= set(pages), "new evidence pages are not reachable"
+    assert pages[1:8] == sorted(required_slugs)[:7], (
+        "current executed-evidence pages are not first after the index"
+    )
     return len(pages)
 
 
