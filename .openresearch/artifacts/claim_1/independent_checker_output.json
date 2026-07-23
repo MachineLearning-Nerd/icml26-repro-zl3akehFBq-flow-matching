@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "all_finite": true,
+    "epsilon_squared_d16_steps512": true,
+    "epsilon_squared_d16_steps64": true,
+    "epsilon_squared_d16_steps8": true,
+    "epsilon_squared_d1_steps512": true,
+    "epsilon_squared_d1_steps64": true,
+    "epsilon_squared_d1_steps8": true,
+    "epsilon_squared_d256_steps512": true,
+    "epsilon_squared_d256_steps64": true,
+    "epsilon_squared_d256_steps8": true,
+    "h1_identity": true,
+    "independent_current_d3": true,
+    "independent_prior_d4": true,
+    "kl_decreases_d1": true,
+    "kl_decreases_d128": true,
+    "kl_decreases_d16": true,
+    "kl_decreases_d2": true,
+    "kl_decreases_d256": true,
+    "kl_decreases_d32": true,
+    "kl_decreases_d4": true,
+    "kl_decreases_d64": true,
+    "kl_decreases_d8": true,
+    "kl_linear_d_steps128": true,
+    "kl_linear_d_steps16": true,
+    "kl_linear_d_steps256": true,
+    "kl_linear_d_steps32": true,
+    "kl_linear_d_steps512": true,
+    "kl_linear_d_steps64": true,
+    "kl_linear_d_steps8": true
+  },
+  "independent": {
+    "current_degree_verified": true,
+    "current_factor": "d*(sqrt(2)*sqrt(d)*sqrt(2*d + 2)*sqrt(2*d + 4)*sqrt(2*d + 6) + d**2)",
+    "current_over_d3_limit": "5",
+    "engine": "sympy-1.14.0",
+    "prior_degree_verified": true,
+    "prior_factor": "6*d**4 + 60*d**3 + 220*d**2 + 240*d",
+    "prior_over_d4_limit": "6"
+  },
+  "passed": true
+}

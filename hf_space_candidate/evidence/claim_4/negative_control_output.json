@@ -1,0 +1,25 @@
+{
+  "expected_rejections": 3,
+  "observed_rejections": 3,
+  "outcomes": [
+    {
+      "expected": "REJECTED",
+      "name": "old_w2_below_ten",
+      "observed": "REJECTED",
+      "reason": "A loose threshold neither tests scaling nor even monotone refinement."
+    },
+    {
+      "expected": "REJECTED",
+      "name": "omit_H5_epsilon_term",
+      "observed": "REJECTED",
+      "reason": "The exact endpoint mean has a positive component linear in epsilon."
+    },
+    {
+      "expected": "REJECTED",
+      "name": "uncertified_weak_log_concavity",
+      "observed": "REJECTED",
+      "reason": "The contract requires explicit alpha_pi>0 and finite Hessian norm."
+    }
+  ],
+  "passed": true
+}

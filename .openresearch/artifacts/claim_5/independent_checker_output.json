@@ -1,0 +1,42 @@
+{
+  "checks": {
+    "explicit_independence": true,
+    "finite_w2": true,
+    "h5_identity": true,
+    "independent_matrix_w2": true,
+    "lemma_alpha": true,
+    "lemma_hessian_bound": true,
+    "lemma_score_bound": true,
+    "marginal_H8": true,
+    "w2_decreases_d16_s0.5_1.5": true,
+    "w2_decreases_d16_s0.75_2.0": true,
+    "w2_decreases_d16_s1.0_0.75": true,
+    "w2_decreases_d16_s2.0_1.25": true,
+    "w2_decreases_d1_s0.5_1.5": true,
+    "w2_decreases_d1_s0.75_2.0": true,
+    "w2_decreases_d1_s1.0_0.75": true,
+    "w2_decreases_d1_s2.0_1.25": true,
+    "w2_decreases_d256_s0.5_1.5": true,
+    "w2_decreases_d256_s0.75_2.0": true,
+    "w2_decreases_d256_s1.0_0.75": true,
+    "w2_decreases_d256_s2.0_1.25": true,
+    "w2_decreases_d4_s0.5_1.5": true,
+    "w2_decreases_d4_s0.75_2.0": true,
+    "w2_decreases_d4_s1.0_0.75": true,
+    "w2_decreases_d4_s2.0_1.25": true,
+    "w2_decreases_d64_s0.5_1.5": true,
+    "w2_decreases_d64_s0.75_2.0": true,
+    "w2_decreases_d64_s1.0_0.75": true,
+    "w2_decreases_d64_s2.0_1.25": true
+  },
+  "independent": {
+    "absolute_difference": 6.938893903907228e-17,
+    "analytic_w2": 0.03930841343927176,
+    "block_hessian_identity": "Hessian(log pi)=diag(Hessian(log mu),Hessian(log nu*))",
+    "checker": "scipy.linalg.sqrtm with unequal target covariance",
+    "factorization_identity": "log pi(x0,x1)=log mu(x0)+log nu*(x1)",
+    "matrix_verified": true,
+    "matrix_w2": 0.03930841343927169
+  },
+  "passed": true
+}

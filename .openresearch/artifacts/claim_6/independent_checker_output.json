@@ -1,0 +1,24 @@
+{
+  "checks": {
+    "analytic_crosscheck": true,
+    "current_d3": true,
+    "derivative_order_metadata": true,
+    "ibp_numeric_identity": true,
+    "nonvacuous_integrals": true,
+    "prior_d4": true,
+    "symbolic_order_reduction": true,
+    "triplet_count_d3": true
+  },
+  "independent": {
+    "coupling_score": "(mean - u)/sigma**2",
+    "current_over_d3_limit": "5",
+    "engine": "sympy-1.14.0",
+    "kernel_polynomial_degree_after": 2,
+    "kernel_polynomial_degree_before": 3,
+    "order_reduction_verified": true,
+    "prior_over_d4_limit": "6",
+    "second_kernel_derivative_ratio": "(-2*s + (u - x)**2)/(4*s**2)",
+    "third_kernel_derivative_ratio": "(6*s - (u - x)**2)*(u - x)/(8*s**3)"
+  },
+  "passed": true
+}

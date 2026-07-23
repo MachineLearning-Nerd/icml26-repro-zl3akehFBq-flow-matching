@@ -1,0 +1,30 @@
+{
+  "arxiv": "2606.16610",
+  "claim_results": {
+    "claim_1": {
+      "basis": "Exact independent-Gaussian specialization satisfies H1-H3; the source bound has asymptotic d^3 versus the cited prior d^4 factor; exact Euler KL separates epsilon^2 and decreases faster than the theorem's O(h) upper-order allowance.",
+      "verdict": "VERIFIED"
+    },
+    "claim_2": {
+      "basis": "For pi=N(0,I_d) tensor point-mass(0), H3 fails because the joint is singular but H4 holds because pi_{0|1}=N(0,I_d). At every delta>0 the bridge and Euler laws are exact Gaussians; KL converges with h and the explicit bound factor is O(d^3).",
+      "verdict": "VERIFIED"
+    },
+    "claim_3": {
+      "basis": "The implicit schedule h_k=h min(t_k,1-t_k) is implemented exactly. The displayed early-stopping dependence changes from delta^-4 to log(1/delta), yielding lower bound-certified work near the endpoint while preserving O(d^3).",
+      "verdict": "VERIFIED"
+    },
+    "claim_4": {
+      "basis": "Correlated Gaussian couplings certify H3, H6, and H7. Exact Gaussian W2 separates an H5 drift component linear in epsilon from decreasing discretization error; the displayed dimension term is O(sqrt(d^3)).",
+      "verdict": "VERIFIED"
+    },
+    "claim_5": {
+      "basis": "Unequal Gaussian marginals satisfy H8 individually and are combined only through pi=mu tensor nu*. Lemma 1's score, Hessian, alpha, and M relations are checked, and exact Corollary 3 W2 converges under refinement.",
+      "verdict": "VERIFIED"
+    },
+    "claim_6": {
+      "basis": "The appendix's derivative transfer is reproduced as an integration-by-parts identity: a third heat-kernel derivative equals a second derivative times the coupling score. Numeric quadrature and symbolic differentiation agree, alongside the exact current d^3 and prior d^4 source factors.",
+      "verdict": "VERIFIED"
+    }
+  },
+  "paper": "Diffusion Flow Matching: Dimension-Improved KL Bounds and Wasserstein Guarantees"
+}

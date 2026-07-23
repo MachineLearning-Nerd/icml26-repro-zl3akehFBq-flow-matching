@@ -1,0 +1,20 @@
+{
+  "retrieval": {
+    "date_utc": "2026-07-23T12:36:52Z",
+    "method": "HTTP GET with explicit Mozilla/5.0 OpenResearch-Reproduction/1.0 User-Agent",
+    "sha256": "c3553013f3f7022f6e5f539e735585d6180364f716d4b17b5679aacb519546ff",
+    "size_bytes": 1314182,
+    "url": "https://ar5iv.labs.arxiv.org/html/2606.16610"
+  },
+  "source": {
+    "arxiv": "2606.16610",
+    "openreview": "https://openreview.net/forum?id=zl3akehFBq",
+    "title": "Diffusion Flow Matching: Dimension-Improved KL Bounds and Wasserstein Guarantees"
+  },
+  "theorem_anchors": {
+    "assumption_h1": "#Thmassumption1",
+    "assumption_h2": "#Thmassumption2",
+    "assumption_h3": "#Thmassumption3",
+    "theorem_1": "#Thmtheorem1"
+  }
+}

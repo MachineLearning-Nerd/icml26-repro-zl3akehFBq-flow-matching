@@ -1,0 +1,47 @@
+{
+  "paper": {
+    "arxiv": "2606.16610",
+    "openreview": "zl3akehFBq",
+    "title": "Diffusion Flow Matching: Dimension-Improved KL Bounds and Wasserstein Guarantees"
+  },
+  "judged_baseline": {
+    "score": "3/12",
+    "space_id": "DineshAI/zl3akehFBq",
+    "hf_head": "af641c4e7cc7775c33d10295b73ef75347a7ab1b",
+    "judge_head": "af641c4e7cc7775c33d10295b73ef75347a7ab1b"
+  },
+  "scientific_winner": {
+    "branch": "orx/claim-6-integration-by-parts-mechanism",
+    "git_sha": "3e033f9eb97680117094f9f48859118bb5c3ad2f",
+    "orx_run_id": "f2f98137-4beb-4f45-a539-e0d7a2361882"
+  },
+  "fixed_command": "uv sync --frozen && uv run --frozen python repro/src/verify_fm.py",
+  "environment": {
+    "manager": "uv",
+    "python": "3.12.11",
+    "logical_cpu_count": 8,
+    "compute": "local Apple CPU",
+    "gpu_used": false,
+    "remote_compute_used": false,
+    "cost_usd": 0
+  },
+  "evidence": {
+    "claims": 6,
+    "raw_rows": 2331,
+    "negative_controls_rejected": 18,
+    "local_verdicts": [
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED"
+    ]
+  },
+  "publication": {
+    "hugging_face_published": false,
+    "live_judge_evaluated_candidate": false,
+    "score_increase_claimed": false,
+    "requires_explicit_approval": true
+  }
+}

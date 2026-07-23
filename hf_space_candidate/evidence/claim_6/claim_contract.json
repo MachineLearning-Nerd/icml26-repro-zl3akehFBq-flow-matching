@@ -1,0 +1,13 @@
+{
+  "claim_id": 6,
+  "claim_text": "The d^4-to-d^3 improvement comes from integration by parts that transfers one derivative from a three-logarithmic-derivative contribution onto the coupling, leaving second-order kernel differentiation.",
+  "source_locations": ["#S5", "equations 178-184", "equations 186-193"],
+  "acceptance_criteria": [
+    "A nonzero third-derivative heat-kernel integral equals the transferred second-derivative-times-coupling-score integral.",
+    "Independent analytic convolution derivatives match numerical quadrature.",
+    "SymPy confirms kernel polynomial order changes from three to two while the coupling score carries one derivative.",
+    "The exact current source factor is O(d^3) and the cited prior factor is O(d^4).",
+    "All negative controls are rejected."
+  ],
+  "fail_policy": "Any failed criterion exits nonzero."
+}

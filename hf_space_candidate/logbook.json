@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "title": "Repro - Diffusion Flow Matching: Dimension-Improved KL Bounds",
+  "emoji": "🎯",
+  "space_id": "DineshAI/zl3akehFBq",
+  "paper": null,
+  "tags": [
+    "icml2026-repro",
+    "paper-zl3akehFBq"
+  ],
+  "updated_at": "2026-07-23T13:24:43+00:00",
+  "root": {
+    "slug": "index",
+    "title": "Repro - Diffusion Flow Matching: Dimension-Improved KL Bounds",
+    "file": "pages/index.md",
+    "children": [
+      {
+        "slug": "overview",
+        "title": "Overview",
+        "file": "pages/overview/page.md",
+        "children": []
+      },
+      {
+        "slug": "claims",
+        "title": "Claims",
+        "file": "pages/claims/page.md",
+        "children": []
+      },
+      {
+        "slug": "evidence",
+        "title": "Evidence",
+        "file": "pages/evidence/page.md",
+        "children": []
+      },
+      {
+        "slug": "verification-run",
+        "title": "Verification run",
+        "file": "pages/verification-run/page.md",
+        "children": []
+      },
+            {
+                "slug": "conclusion",
+                "title": "Conclusion",
+                "file": "pages/conclusion/page.md",
+                "children": []
+            },
+            {
+                "slug": "claim-contract-results",
+                "title": "2026 claim-contract results",
+                "file": "pages/claim-contract-results/page.md",
+                "children": []
+            },
+            {
+                "slug": "release-evidence",
+                "title": "Cumulative release evidence",
+                "file": "pages/release-evidence/page.md",
+                "children": []
+            },
+            {
+                "slug": "release-manifest",
+                "title": "Protected revision and manifest",
+                "file": "pages/release-manifest/page.md",
+                "children": []
+            }
+    ]
+  },
+  "agent_view_tokens": 1371,
+  "revision": "1784794963098560659"
+}
