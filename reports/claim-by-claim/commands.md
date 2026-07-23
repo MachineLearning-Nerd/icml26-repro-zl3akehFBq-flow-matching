@@ -139,5 +139,24 @@ orx exp run 77a1916b-2a06-446e-befb-2fc0e847b802 --backend local
 orx exp wait 77a1916b-2a06-446e-befb-2fc0e847b802 --timeout 480
 ```
 
-Publication commands are absent because no Hugging Face or `master` update is
-authorized before explicit approval.
+## Approved publication and independent verification
+
+The approved release used the Hugging Face text-only commit API with the
+63-path `hf_space_candidate/release/upload-allowlist.txt`, the protected
+parent revision, and no delete operations. Authentication was supplied to the
+client without printing credentials or a generated upload wrapper.
+
+```bash
+hf download DineshAI/zl3akehFBq \
+  --repo-type space \
+  --revision 22e4c6ccfea63d39df4fd57db0ddacb2a505b040 \
+  --local-dir <temporary-verification-directory>
+git ls-remote https://huggingface.co/spaces/DineshAI/zl3akehFBq HEAD
+git push origin HEAD:master
+git ls-remote origin refs/heads/master
+```
+
+The resulting Space revision is
+`22e4c6ccfea63d39df4fd57db0ddacb2a505b040`. The independent download matched
+all 63 uploaded path hashes, retained all 17 judged paths, and kept the 16
+non-logbook judged files byte-identical.

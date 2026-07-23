@@ -1,0 +1,17 @@
+{
+  "space_id": "DineshAI/zl3akehFBq",
+  "previous_judged_revision": "af641c4e7cc7775c33d10295b73ef75347a7ab1b",
+  "published_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
+  "publication_mode": "text-only Hugging Face commit API",
+  "upload_path_count": 63,
+  "delete_operation_count": 0,
+  "independent_download_verified": true,
+  "verified_upload_hash_count": 63,
+  "previous_judged_path_count": 17,
+  "previous_non_logbook_byte_identical_count": 16,
+  "judge_status": "queued",
+  "judge_detail": "re-judging (logbook updated)",
+  "judge_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
+  "judge_status_checked_at": "2026-07-23T13:47:22+00:00",
+  "live_score_claimed": false
+}

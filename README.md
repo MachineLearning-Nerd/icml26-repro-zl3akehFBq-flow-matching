@@ -11,10 +11,11 @@ specialization, and the integration-by-parts mechanism behind the dimensional
 improvement.
 
 The previous judged revision received **3/12** after a 3D toy test. The new
-local candidate gives **VERIFIED** for all six source-faithful, fail-closed
-contracts. This is a local assessment—not a new judge score. The candidate
-Hugging Face revision remains unpublished pending approval, and only the live
-judge can change the score.
+local campaign gives **VERIFIED** for all six source-faithful, fail-closed
+contracts. The additive release is published at Hugging Face revision
+[`22e4c6cc`](https://huggingface.co/spaces/DineshAI/zl3akehFBq/commit/22e4c6ccfea63d39df4fd57db0ddacb2a505b040)
+and that exact revision is queued for the live judge. This is still a local
+assessment—not a new judge score—and only the live verdict can change 3/12.
 
 The paper's exact asymptotic factors normalize to `5d³` for Theorem 1 and
 `6d⁴` for the cited prior result. The reproduction observes those symbolic
@@ -42,7 +43,7 @@ the formal verifier.
 
 | Branch / experiment | Purpose | Exact run command | Assessment / outcome | Compute |
 |---|---|---|---|---|
-| [`master`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/master) | Publication surface | Not run as an experiment (publication surface) | Awaiting explicit publication approval | — |
+| [`master`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/master) | Publication surface | Not run as an experiment (publication surface) | Published presentation surface; Space revision `22e4c6cc` queued for judge | — |
 | [`orx/frozen-judged-baseline-with-uv-lock`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/frozen-judged-baseline-with-uv-lock) | Freeze the judged 3D toy and pin the environment | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Reproduced the 3/12 toy baseline and its contradictory evidence page | Local CPU, 5s |
 | [`orx/claim-1-exact-gaussian-theorem-audit`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-1-exact-gaussian-theorem-audit) | Theorem 1 `d³`, `ε²`, and `h` contract | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Claim 1 VERIFIED locally | Local CPU, 5s |
 | [`orx/claim-2-conditional-only-early-stopping`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-2-conditional-only-early-stopping) | Strict H4-without-H3 witness | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Claims 1–2 VERIFIED locally | Local CPU, 5s |

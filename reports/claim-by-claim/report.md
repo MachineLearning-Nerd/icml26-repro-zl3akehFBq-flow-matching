@@ -174,9 +174,11 @@ estimated, and no claim of bound tightness is made.
 ## Assessment
 
 The campaign directly answers every criticism in the 3/12 verdict with
-reproducible local evidence. All six local contracts are VERIFIED, but no score
-increase is claimed: the candidate Hugging Face revision remains unpublished
-until explicit approval, and only the live judge can assign a new score.
+reproducible local evidence. All six local contracts are VERIFIED. The
+additive release is published at Hugging Face revision
+[`22e4c6cc`](https://huggingface.co/spaces/DineshAI/zl3akehFBq/commit/22e4c6ccfea63d39df4fd57db0ddacb2a505b040),
+and the judge has queued that exact revision for re-evaluation. No score
+increase is claimed until the live judge assigns a new verdict.
 
 The stacked lineage is available on the
 [baseline branch](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/frozen-judged-baseline-with-uv-lock),
