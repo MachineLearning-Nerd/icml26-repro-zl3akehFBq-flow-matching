@@ -1,0 +1,27 @@
+{
+  "claim_id": 1,
+  "claim_text": "Under H1-H3, constant-step Brownian-motion-based diffusion flow matching has a KL upper bound whose explicit dimension-dependent factor is O(d^3), improving the cited prior O(d^4) factor, and whose terms separate drift approximation epsilon^2 from discretization proportional to h.",
+  "domain": "Theorem 1, non-early-stopped Brownian bridge, h=1/N",
+  "family_under_test": {
+    "coupling": "pi = N(0,I_d) tensor N(0,I_d)",
+    "dimensions": [1, 2, 4, 8, 16, 32, 64, 128, 256],
+    "drift": "beta(t,x)=-x; approximation s(t,x)=-x+q with ||q||=epsilon",
+    "epsilon": [0.0, 0.02, 0.04, 0.08],
+    "steps": [8, 16, 32, 64, 128, 256, 512]
+  },
+  "assumptions": {
+    "H1": "sum h E||s-beta||^2 = epsilon^2 exactly",
+    "H2": "standard Gaussian marginals have finite eighth moments d(d+2)(d+4)(d+6)",
+    "H3": "the independent Gaussian joint density is positive C-infinity and its score has finite L8 norm"
+  },
+  "acceptance_criteria": [
+    "An independent symbolic checker proves the current theorem factor divided by d^3 tends to a finite nonzero constant.",
+    "The same checker proves the cited prior factor divided by d^4 tends to a finite nonzero constant.",
+    "The exact Euler endpoint KL decreases for every tested dimension as h decreases.",
+    "At fixed d and h, the KL increment from q is quadratic in epsilon.",
+    "H1 evaluates to epsilon^2 exactly.",
+    "All designed negative controls are rejected."
+  ],
+  "verdict_vocabulary": ["VERIFIED", "FALSIFIED", "BLOCKED"],
+  "fail_policy": "Any failed acceptance criterion terminates the verifier with a nonzero exit code."
+}
