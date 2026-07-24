@@ -33,10 +33,10 @@ uv sync --frozen && uv run --frozen python repro/src/verify_fm.py
 ```
 
 The scientific evidence run was
-`cc1f0ac1-c742-45ef-b58b-0d329a3ae394` at Git SHA
-`6915a6b848e070fc2497b46fc64d9011622023eb` on an 8-logical-core Apple
-arm64 CPU. It completed with exit 0 in 35.96 verifier seconds. No GPU was
-used. All deliberately corrupted controls were rejected; any failed
+`8c10975f-a2f4-4176-b678-50a2d55aa962` at Git SHA
+`4d6a75b59e359f03b8836d1e7488910eda66b84a` on an 8-logical-core Apple
+arm64 CPU. It completed with exit 0 in 29.645 verifier seconds. No GPU was
+used. All 18 executed mutation controls were rejected; any failed
 acceptance check raises and exits nonzero.
 
 The universal theorem statements are not inferred from finite Gaussian
