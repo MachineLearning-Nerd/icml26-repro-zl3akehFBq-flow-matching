@@ -10,12 +10,16 @@ early-stopping relaxation, the specified non-uniform schedule, the
 specialization, and the integration-by-parts mechanism behind the dimensional
 improvement.
 
-The previous judged revision received **3/12** after a 3D toy test. The new
-local campaign gives **VERIFIED** for all six source-faithful, fail-closed
-contracts. The additive release is published at Hugging Face revision
+The original judged revision received **3/12** after a 3D toy test. The first
+additive release improved the official score to **5/12** at Hugging Face revision
 [`22e4c6cc`](https://huggingface.co/spaces/DineshAI/zl3akehFBq/commit/22e4c6ccfea63d39df4fd57db0ddacb2a505b040)
-and that exact revision is queued for the live judge. This is still a local
-assessment—not a new judge score—and only the live verdict can change 3/12.
+because the judge still treated the preserved legacy run as current and did
+not regard the new contracts as executed output. The second release at
+[`f2b258ac`](https://huggingface.co/spaces/DineshAI/zl3akehFBq/commit/f2b258ac5c887a907b40ae0a6176236c0d574016)
+puts the actual 476,391-byte ORX transcript, executable formulas, representative
+raw rows, assumptions, and controls directly into seven judge-readable pages.
+All six local contracts remain **VERIFIED**, but no score beyond 5/12 is claimed
+until the live judge evaluates this revision.
 
 The paper's exact asymptotic factors normalize to `5d³` for Theorem 1 and
 `6d⁴` for the cited prior result. The reproduction observes those symbolic
@@ -43,7 +47,7 @@ the formal verifier.
 
 | Branch / experiment | Purpose | Exact run command | Assessment / outcome | Compute |
 |---|---|---|---|---|
-| [`master`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/master) | Publication surface | Not run as an experiment (publication surface) | Published presentation surface; Space revision `22e4c6cc` queued for judge | — |
+| [`master`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/master) | Publication surface | Not run as an experiment (publication surface) | Presentation surface for Space revision `f2b258ac`; awaiting judge, official score still 5/12 | — |
 | [`orx/frozen-judged-baseline-with-uv-lock`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/frozen-judged-baseline-with-uv-lock) | Freeze the judged 3D toy and pin the environment | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Reproduced the 3/12 toy baseline and its contradictory evidence page | Local CPU, 5s |
 | [`orx/claim-1-exact-gaussian-theorem-audit`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-1-exact-gaussian-theorem-audit) | Theorem 1 `d³`, `ε²`, and `h` contract | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Claim 1 VERIFIED locally | Local CPU, 5s |
 | [`orx/claim-2-conditional-only-early-stopping`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-2-conditional-only-early-stopping) | Strict H4-without-H3 witness | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Claims 1–2 VERIFIED locally | Local CPU, 5s |
@@ -51,7 +55,10 @@ the formal verifier.
 | [`orx/claim-4-exact-wasserstein-decomposition`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-4-exact-wasserstein-decomposition) | W₂ decomposition with explicit H3/H6/H7 | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Claims 1–4 VERIFIED locally | Local CPU, 15s |
 | [`orx/claim-5-independent-marginal-specialization`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-5-independent-marginal-specialization) | Product coupling and marginal H8 checks | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Claims 1–5 VERIFIED locally | Local CPU, 35s |
 | [`orx/claim-6-integration-by-parts-mechanism`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/claim-6-integration-by-parts-mechanism) | Nonzero integration-by-parts identity and derivative-order audit | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | All six claims VERIFIED locally; scientific winner | Local CPU, 1m10s |
-| [`orx/cumulative-evidence-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/cumulative-evidence-release-candidate) | Reader artifacts, protected Space candidate, and release regression | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Prepared locally; final regression recorded before release | Local CPU |
+| [`orx/cumulative-evidence-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/cumulative-evidence-release-candidate) | First protected Space release | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | Published as `22e4c6cc`; live judge awarded 5/12 | Local CPU, 1m00s |
+| [`orx/judge-visible-executed-evidence`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/judge-visible-executed-evidence) | Put actual ORX logs, code, raw rows, assumptions, and controls into judge-readable pages | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | All six contracts pass; seven current pages emitted before legacy pages | Local CPU, 50s |
+| [`orx/second-cumulative-evidence-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/second-cumulative-evidence-release-candidate) | Embed exact executed-run metadata and validate the second additive release | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | All six contracts pass again; published additively as `f2b258ac` | Local CPU, 30s |
+| [`orx/final-second-release-presentation-gate`](https://github.com/MachineLearning-Nerd/icml26-repro-zl3akehFBq-flow-matching/tree/orx/final-second-release-presentation-gate) | Final protected-tree and publication regression | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` | All six contracts and all release gates pass; awaiting live judge | Local CPU, 1m10s |
 
 ## Reproduce
 

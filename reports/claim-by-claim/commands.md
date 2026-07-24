@@ -160,3 +160,57 @@ The resulting Space revision is
 `22e4c6ccfea63d39df4fd57db0ddacb2a505b040`. The independent download matched
 all 63 uploaded path hashes, retained all 17 judged paths, and kept the 16
 non-logbook judged files byte-identical.
+
+## Judge-visible evidence repair
+
+```bash
+orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
+  --title "Judge-visible executed evidence" \
+  --parent 77a1916b-2a06-446e-befb-2fc0e847b802
+orx exp run 9daf03d6-6ccc-47ed-99da-f856a3296b54 --backend local
+orx exp wait 9daf03d6-6ccc-47ed-99da-f856a3296b54 --timeout 480
+orx logs 0a539277-4fa4-4894-8623-a823aeaf193b --head --bytes 50000
+orx logs 0a539277-4fa4-4894-8623-a823aeaf193b --bytes 20000
+orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
+  --title "Second cumulative evidence release candidate" \
+  --parent 9daf03d6-6ccc-47ed-99da-f856a3296b54
+```
+
+The executed-evidence run cloned
+`7e3ab5c3a71ac38f1d14a4722e2abbe468fe8fd4`, completed in 50 seconds, and
+captured 476,391 bytes.
+
+```bash
+orx exp run 117124a0-d6c4-41fc-8701-f14e44dc9d0d --backend local
+orx exp wait 117124a0-d6c4-41fc-8701-f14e44dc9d0d --timeout 480
+orx logs 35859b3d-6244-4e21-91bc-95a0b8582462 --head --bytes 18000
+orx logs 35859b3d-6244-4e21-91bc-95a0b8582462 --bytes 12000
+orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
+  --title "Final second-release presentation gate" \
+  --parent 117124a0-d6c4-41fc-8701-f14e44dc9d0d
+```
+
+The cumulative second-candidate run cloned
+`116e6f6fade7dc7b11a414668d9540bb9563cc8f`, completed in 30 seconds
+(22.708 seconds inside the verifier), and captured 476,941 bytes. It reproduced
+all six VERIFIED outcomes and rejected all 18 negative controls. The candidate
+was then published after the final presentation-child regression and explicit
+release approval.
+
+```bash
+orx exp run 6f502e03-d8d4-492f-a108-f704f78fa498 --backend local
+orx exp wait 6f502e03-d8d4-492f-a108-f704f78fa498 --timeout 480
+orx logs e16486f7-a815-434e-8ba2-b4215d7ec4dd --head --bytes 22000
+orx logs e16486f7-a815-434e-8ba2-b4215d7ec4dd --bytes 22000
+hf download DineshAI/zl3akehFBq \
+  --repo-type space \
+  --revision f2b258ac5c887a907b40ae0a6176236c0d574016 \
+  --local-dir <temporary-verification-directory>
+git ls-remote https://huggingface.co/spaces/DineshAI/zl3akehFBq HEAD
+```
+
+The text-only Hugging Face commit API added exactly the ten allowlisted files
+with no delete operations. The resulting revision was
+`f2b258ac5c887a907b40ae0a6176236c0d574016`; its independent download matched
+all ten approved hashes and retained all 78 protected non-logbook files from
+the previous judged revision byte-for-byte.

@@ -32,8 +32,9 @@ def _(mo, np, plt):
                 # Dimension-improved diffusion flow matching
 
                 **Evidence first:** the cumulative CPU verifier reports a source-faithful
-                result for all six paper claims. These are local contract outcomes—not a
-                new live-judge score.
+                result for all six paper claims. The current official score is 5/12;
+                the second release is published at revision `f2b258ac`, but these
+                local outcomes are not a claim that the live score has changed.
                 """
             ),
             _fig,
@@ -186,7 +187,8 @@ def _(mo):
         ## Interpretation and limits
 
         `VERIFIED` here means a source-faithful contract passed on the recorded
-        branch. It does **not** mean the live judge has assigned new credit.
+        branch. The live judge assigned 5/12 to the first release; publication
+        of revision `f2b258ac` does **not** mean it has received new credit.
         These exact Gaussian specializations test the theorem factors,
         decompositions, assumption relaxation, schedule, and proof mechanism;
         they do not estimate hidden constants, establish tightness, or replace
