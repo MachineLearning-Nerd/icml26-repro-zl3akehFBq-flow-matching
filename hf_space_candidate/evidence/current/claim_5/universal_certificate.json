@@ -1,0 +1,24 @@
+{
+  "certificate_kind": "general_pointwise_product_calculus",
+  "identities": {
+    "hessian": "Hess log pi=diag(Hess log mu,Hess log nu)",
+    "log_product": "log(mu(x)nu(y))=log(mu(x))+log(nu(y))",
+    "mixed_hessian": "0",
+    "score": "grad log pi=(grad log mu, grad log nu)",
+    "weak_curvature_constant": "M_pi=2 max(M_mu,M_nu)",
+    "weak_log_concavity": "alpha_pi=min(alpha_mu,alpha_nu)"
+  },
+  "scope": "These pointwise identities cover the arbitrary product coupling specialization in Lemma 1/Corollary 3; exact unequal Gaussian marginals are only numerical corroboration.",
+  "symbolic_checks": {
+    "all_pointwise_derivative_checks_zero": true,
+    "alpha_rule": "Min(alpha_mu, alpha_nu)",
+    "block_hessian_trace_adds": "H_xx + H_yy",
+    "mixed_hessian_residual": "0",
+    "score_squared_adds": "s_x**2 + s_y**2",
+    "score_x_residual": "0",
+    "score_y_residual": "0"
+  },
+  "universal_variables": [
+    "all positive C2 marginal densities mu(x), nu(y)"
+  ]
+}

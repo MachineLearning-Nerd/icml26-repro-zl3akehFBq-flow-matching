@@ -1,0 +1,7 @@
+claim,canonical_page,code_visible,data_inline,raw_link,checker,control,exact_claim_tested,reviewer_verdict
+1,pages/11-current-claim-1/page.md,yes,yes,yes,yes,yes,scoped-corrob+rate-certificate,1/2-scoped
+2,pages/12-current-claim-2/page.md,yes,yes,yes,yes,yes,strict-witness+rate-certificate,1/2-scoped
+3,pages/13-current-claim-3/page.md,yes,yes,yes,yes,yes,18-first-hits+schedule-certificate,1/2-scoped
+4,pages/14-current-claim-4/page.md,yes,yes,yes,yes,yes,scoped-corrob+rate-certificate,1/2-scoped
+5,pages/15-current-claim-5/page.md,yes,yes,yes,yes,yes,general-product-calculus+scoped-W2,1/2-scoped
+6,pages/16-current-claim-6/page.md,yes,yes,yes,yes,yes,general-IBP+partial-d3-mechanism,1/2-scoped

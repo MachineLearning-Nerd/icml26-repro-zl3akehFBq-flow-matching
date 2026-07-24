@@ -1,0 +1,24 @@
+{
+  "checks": {
+    "endpoint_accuracy": true,
+    "faster_at_small_delta": true,
+    "finite_nonnegative_kl": true,
+    "independent_d3": true,
+    "observed_first_hits_reach_target": true,
+    "observed_nonuniform_work_advantage": true,
+    "observed_previous_resources_miss_target": true,
+    "ratio_increases_d1": true,
+    "ratio_increases_d256": true,
+    "ratio_increases_d64": true,
+    "ratio_increases_d8": true,
+    "schedule_identity": true
+  },
+  "independent": {
+    "d3_verified": true,
+    "engine": "sympy-1.14.0",
+    "implicit_schedule_solution": "1-t_{M+j}=(1/2)(1+h)^(-j)",
+    "primary_work_evidence": "binary-searched first hit of exact Euler KL; no theorem formula selects either resource budget",
+    "theorem3_coefficient_over_d3_limit": "2 - log(delta)"
+  },
+  "passed": true
+}

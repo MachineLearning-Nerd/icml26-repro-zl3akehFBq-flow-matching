@@ -1,0 +1,17 @@
+{
+  "certificate_kind": "independent_symbolic_rate_and_assumption_derivation",
+  "derivation": [
+    "The premise contains only the conditional score norm, not the joint score norm",
+    "for fixed delta and S_cond,8^4=O(d^2), the dimension factor is O(d^3)",
+    "the singular product witness establishes H4 true while H3 is undefined/false"
+  ],
+  "normalized_limit": "(C + delta**(-4))*(h**(1/8) + 1)",
+  "paper_premise": "KL_delta <= epsilon^2 + h(h^(1/8)+1)(d^2/delta^4+S_cond,8^4)d",
+  "scope": "Certifies the displayed rate and the strict logical weakening H4-not-H3; it does not infer the universal theorem from the witness.",
+  "universal_variables": [
+    "d>=1",
+    "0<h<=1",
+    "0<delta<1/2",
+    "epsilon>=0"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "expected_rejections": 3,
+  "observed_rejections": 3,
+  "outcomes": [
+    {
+      "expected": "REJECTED",
+      "explanation": "Removing the theorem's outer d changes the leading degree from three to two.",
+      "name": "remove_outer_dimension_factor",
+      "observed": "REJECTED"
+    },
+    {
+      "expected": "REJECTED",
+      "explanation": "A nonzero constant drift error changes KL by a positive epsilon-squared term.",
+      "name": "omit_drift_approximation_term",
+      "observed": "REJECTED"
+    },
+    {
+      "expected": "REJECTED",
+      "explanation": "One dimension cannot identify a dimensional exponent.",
+      "name": "single_dimension_scaling_claim",
+      "observed": "REJECTED"
+    }
+  ],
+  "passed": true
+}

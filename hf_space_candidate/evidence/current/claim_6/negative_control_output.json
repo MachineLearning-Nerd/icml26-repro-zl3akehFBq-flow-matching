@@ -1,0 +1,34 @@
+{
+  "expected_rejections": 3,
+  "observed_rejections": 3,
+  "outcomes": [
+    {
+      "expected": "REJECTED",
+      "name": "sign_flipped_integration_by_parts",
+      "observed": "REJECTED",
+      "reason": "The boundary-free identity has a required minus sign."
+    },
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "minimum_mutated_residual": 0.04403992026646837
+      },
+      "name": "omit_coupling_score_after_transfer",
+      "observed": "REJECTED",
+      "reason": "Integration by parts differentiates the coupling density."
+    },
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "missing_required_fields": [
+          "direct_third_derivative_integral",
+          "transferred_second_derivative_score_integral"
+        ]
+      },
+      "name": "old_low_rank_score_identity",
+      "observed": "REJECTED",
+      "reason": "E||grad V||^2=tr(H) does not test derivative transfer or d^4-to-d^3 scaling."
+    }
+  ],
+  "passed": true
+}

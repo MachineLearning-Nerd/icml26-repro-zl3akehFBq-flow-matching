@@ -1,0 +1,23 @@
+{
+  "space_id": "DineshAI/zl3akehFBq",
+  "previous_hf_revision": "f2b258ac5c887a907b40ae0a6176236c0d574016",
+  "previous_judge_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
+  "previous_official_score": "5/12",
+  "published_revision": "adc03f7da795a88a5c7aaa19aa44ea6c2787c78a",
+  "winning_branch": "orx/recorded-blind-review-release-gate",
+  "winning_git_sha": "e62e0f84de8bb5b9dd5cc5e8d7d6365c49b48787",
+  "publication_mode": "Hugging Face text-only commit API",
+  "upload_path_count": 102,
+  "delete_operation_count": 0,
+  "upload_allowlist_sha256": "27bb9d10b8b3e8b2651332d6d29fcd5afe368d2835b8dd3ca00c88a3c6885ac4",
+  "text_manifest_sha256": "fabcbd01573512bdbe4228307fed77255ec48ca1449a68b87063c82c1ba8ea04",
+  "independent_download_verified": true,
+  "verified_upload_hash_count": 102,
+  "protected_parent_path_count": 88,
+  "byte_identical_parent_path_count": 85,
+  "canonical_visibility_rows": 6,
+  "inline_numerical_consistency_verified": true,
+  "strict_blind_forecast": "6/12",
+  "live_score_claimed_beyond_official": false,
+  "judge_status": "awaiting judge"
+}

@@ -1,0 +1,13 @@
+{
+  "determinism": "closed-form arithmetic; no random sampling",
+  "elapsed_seconds": 35.95715512500101,
+  "fixed_command": "uv sync --frozen && uv run --frozen python repro/src/verify_fm.py",
+  "git_sha": "6915a6b848e070fc2497b46fc64d9011622023eb",
+  "logical_cpu_count": 8,
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "processor": "arm",
+  "pyproject_sha256": "140bff28b617955a05d8c18f2b6bfb89dc44807ca7253af05cfbbf3659bb132c",
+  "python": "3.12.11",
+  "seeds": [],
+  "uv_lock_sha256": "c0211b419def805954953715c52925bb17de1415301df384fc737235dbace33f"
+}

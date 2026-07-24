@@ -1,0 +1,23 @@
+{
+  "claim_id": 2,
+  "claim_text": "For 0<delta<1/2, Theorem 2 replaces the full-coupling score assumption H3 by the conditional-coupling score assumption H4 and retains an O(d^3) KL bound under early stopping.",
+  "witness": {
+    "coupling": "pi = N(0,I_d) tensor point-mass(0)",
+    "H3": false,
+    "H3_failure": "The joint is supported on R^d x {0}, a zero-Lebesgue-measure subset of R^(2d).",
+    "H4": true,
+    "H4_reason": "pi_{0|1}=N(0,I_d), whose positive C-infinity density has an L8 score.",
+    "H2": true,
+    "dimensions": [1, 2, 4, 8, 16, 32, 64, 128, 256],
+    "delta": [0.375, 0.25, 0.125, 0.0625],
+    "steps": [16, 32, 64, 128, 256, 512]
+  },
+  "acceptance_criteria": [
+    "The witness satisfies H1, H2, and H4 while demonstrably violating H3.",
+    "For every tested positive delta, the exact early-stopped KL is finite and decreases as h decreases.",
+    "An independent symbolic checker proves the explicit Theorem 2 factor is O(d^3).",
+    "A 50-digit recurrence independently matches the implementation.",
+    "All negative controls are rejected."
+  ],
+  "fail_policy": "Any failed criterion exits nonzero."
+}
