@@ -1,0 +1,7 @@
+claim,canonical_page,code_visible,data_inline,raw_link,checker,control,exact_claim_tested,reviewer_verdict
+1,pages/11-current-claim-1/page.md,yes,yes,yes,yes,yes,yes,scientifically-scoped
+2,pages/12-current-claim-2/page.md,yes,yes,yes,yes,yes,yes,scientifically-scoped
+3,pages/13-current-claim-3/page.md,yes,yes,yes,yes,yes,yes,release-ready
+4,pages/14-current-claim-4/page.md,yes,yes,yes,yes,yes,yes,scientifically-scoped
+5,pages/15-current-claim-5/page.md,yes,yes,yes,yes,yes,yes,release-ready
+6,pages/16-current-claim-6/page.md,yes,yes,yes,yes,yes,yes,release-ready

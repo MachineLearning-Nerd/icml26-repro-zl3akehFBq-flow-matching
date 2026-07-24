@@ -1,0 +1,17 @@
+{
+  "certificate_kind": "independent_symbolic_rate_derivation",
+  "derivation": [
+    "0<h<=1 implies h^(1/8)+1<=2",
+    "S_8^4=O(d^2) implies (d^2+S_8^4)d=O(d^3)",
+    "therefore the two summands are epsilon^2 and O(h d^3)"
+  ],
+  "h_upper_factor": "2",
+  "normalized_limit": "(C + 1)*(h**(1/8) + 1)",
+  "paper_premise": "KL <= epsilon^2 + h(h^(1/8)+1)(d^2+S_8^4)d",
+  "scope": "Certifies the rate and decomposition implied by the displayed Theorem 1 inequality; the exact Gaussian sweep separately corroborates, but does not prove, the universal inequality.",
+  "universal_variables": [
+    "d>=1",
+    "0<h<=1",
+    "epsilon>=0"
+  ]
+}

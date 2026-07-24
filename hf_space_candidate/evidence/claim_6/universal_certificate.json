@@ -1,0 +1,15 @@
+{
+  "certificate_kind": "general_symbolic_integration_by_parts",
+  "derivative_orders": {
+    "after_kernel": 2,
+    "before": 3,
+    "coupling_score": 1
+  },
+  "identity": "integral (d_y^3 K) pi dy = - integral (d_y^2 K)(d_y log pi) pi dy",
+  "scope": "This is the general derivative-transfer identity used by the method. The paper's surrounding stochastic estimates are audited by source anchors and are not inferred from the Gaussian quadrature.",
+  "symbolic_product_rule": "pi(y)*Derivative(K(y), (y, 3)) + Derivative(K(y), (y, 2))*Derivative(pi(y), y)",
+  "tensor_count": "three free coordinate sums give at most d^3 terms",
+  "universal_variables": [
+    "all C3 kernels K and positive C2 coupling densities pi with vanishing boundary term"
+  ]
+}

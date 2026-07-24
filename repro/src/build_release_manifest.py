@@ -9,7 +9,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 ARTIFACTS = REPO / ".openresearch" / "artifacts"
 CANDIDATE = REPO / "hf_space_candidate"
-PROTECTED_MANIFEST = CANDIDATE / "protected" / "judged-22e4c6cc-manifest.tsv"
+PROTECTED_MANIFEST = (
+    CANDIDATE / "protected" / "judged-published-f2b258ac-manifest.tsv"
+)
 RELEASE_DIR = CANDIDATE / "release"
 ALLOWLIST = RELEASE_DIR / "upload-allowlist.txt"
 UPLOAD_MANIFEST = RELEASE_DIR / "text-sha256-manifest.tsv"

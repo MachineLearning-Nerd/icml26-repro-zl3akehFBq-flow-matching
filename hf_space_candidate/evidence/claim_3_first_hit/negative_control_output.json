@@ -1,0 +1,25 @@
+{
+  "expected_rejections": 3,
+  "observed_rejections": 3,
+  "outcomes": [
+    {
+      "expected": "REJECTED",
+      "name": "old_both_below_arbitrary_threshold",
+      "observed": "REJECTED",
+      "reason": "Both values below 0.5 does not test faster convergence."
+    },
+    {
+      "expected": "REJECTED",
+      "name": "constant_step_mislabeled_nonuniform",
+      "observed": "REJECTED",
+      "reason": "Later steps must satisfy h_k=h min(t_k,1-t_k)."
+    },
+    {
+      "expected": "REJECTED",
+      "name": "replace_log_delta_with_delta_minus_four",
+      "observed": "REJECTED",
+      "reason": "This erases the theorem's accelerated endpoint dependence."
+    }
+  ],
+  "passed": true
+}

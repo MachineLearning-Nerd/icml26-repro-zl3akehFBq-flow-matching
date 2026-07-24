@@ -1,0 +1,15 @@
+[project]
+name = "dfm-dimension-improved-reproduction"
+version = "0.1.0"
+description = "CPU reproduction of arXiv:2606.16610"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "marimo>=0.16,<0.17",
+  "matplotlib>=3.10,<3.11",
+  "numpy>=2.3,<2.4",
+  "scipy>=1.16,<1.17",
+  "sympy>=1.14,<1.15",
+]
+
+[tool.uv]
+package = false

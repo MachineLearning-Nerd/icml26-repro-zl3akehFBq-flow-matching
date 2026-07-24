@@ -1,0 +1,16 @@
+{
+  "certificate_kind": "independent_symbolic_rate_derivation",
+  "derivation": [
+    "0<h<=1 implies h^(1/16)+1<=2",
+    "S_8^4=O(d^2) implies sqrt((d^2+S_8^4)d)=O(sqrt(d^3))",
+    "the two summands are linear drift error C epsilon and O(sqrt(h)d^(3/2))"
+  ],
+  "normalized_limit": "sqrt(C + 1)*(h**(1/16) + 1)",
+  "paper_premise": "W2 <= C epsilon + sqrt(h)(h^(1/16)+1)sqrt((d^2+S_8^4)d)",
+  "scope": "Certifies the rate/decomposition consequence of Theorem 4; the correlated Gaussian sweep audits H6/H7 and corroborates it.",
+  "universal_variables": [
+    "d>=1",
+    "0<h<=1",
+    "epsilon>=0"
+  ]
+}

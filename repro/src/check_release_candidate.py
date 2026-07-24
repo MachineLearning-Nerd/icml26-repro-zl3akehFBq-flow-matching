@@ -16,6 +16,12 @@ ORIGINAL_PROTECTED_MANIFEST = (
 ORIGINAL_PROTECTED_LOGBOOK = CANDIDATE / "protected" / "judged-logbook.json"
 PROTECTED_MANIFEST = CANDIDATE / "protected" / "judged-22e4c6cc-manifest.tsv"
 PROTECTED_LOGBOOK = CANDIDATE / "protected" / "judged-22e4c6cc-logbook.json"
+PUBLISHED_PROTECTED_MANIFEST = (
+    CANDIDATE / "protected" / "judged-published-f2b258ac-manifest.tsv"
+)
+PUBLISHED_PROTECTED_LOGBOOK = (
+    CANDIDATE / "protected" / "judged-published-f2b258ac-logbook.json"
+)
 ALLOWLIST = CANDIDATE / "release" / "upload-allowlist.txt"
 UPLOAD_MANIFEST = CANDIDATE / "release" / "text-sha256-manifest.tsv"
 
@@ -28,6 +34,7 @@ REQUIRED_CLAIM_FILES = {
     "runtime.json",
     "EVAL.md",
     "limitations.md",
+    "universal_certificate.json",
 }
 
 
@@ -55,8 +62,11 @@ def walk_logbook(node: dict) -> list[str]:
 
 
 def check_one_protected_tree(
-    manifest_path: Path, logbook_path: Path
+    manifest_path: Path,
+    logbook_path: Path,
+    mutable_navigation: set[str] | None = None,
 ) -> dict[str, int]:
+    mutable = {"logbook.json"} | (mutable_navigation or set())
     judged = parse_manifest(manifest_path)
     candidate_paths = {
         path.relative_to(CANDIDATE).as_posix()
@@ -67,7 +77,7 @@ def check_one_protected_tree(
     assert not missing, f"judged paths missing from candidate: {missing}"
 
     for relative, expected in judged.items():
-        if relative == "logbook.json":
+        if relative in mutable:
             continue
         assert digest(CANDIDATE / relative) == expected, f"protected path changed: {relative}"
     assert digest(logbook_path) == judged["logbook.json"], (
@@ -76,17 +86,26 @@ def check_one_protected_tree(
     return {
         "judged_paths": len(judged),
         "candidate_paths": len(candidate_paths),
-        "byte_identical_non_logbook_paths": len(judged) - 1,
+        "byte_identical_protected_paths": len(judged) - len(mutable & set(judged)),
     }
 
 
 def check_protected_tree() -> dict[str, dict[str, int]]:
     return {
         "original_af641c4e": check_one_protected_tree(
-            ORIGINAL_PROTECTED_MANIFEST, ORIGINAL_PROTECTED_LOGBOOK
+            ORIGINAL_PROTECTED_MANIFEST,
+            ORIGINAL_PROTECTED_LOGBOOK,
+            {"README.md", "pages/index.md"},
         ),
         "current_22e4c6cc": check_one_protected_tree(
-            PROTECTED_MANIFEST, PROTECTED_LOGBOOK
+            PROTECTED_MANIFEST,
+            PROTECTED_LOGBOOK,
+            {"README.md", "pages/index.md"},
+        ),
+        "published_f2b258ac": check_one_protected_tree(
+            PUBLISHED_PROTECTED_MANIFEST,
+            PUBLISHED_PROTECTED_LOGBOOK,
+            {"README.md", "pages/index.md"},
         ),
     }
 
@@ -98,19 +117,26 @@ def check_logbook() -> int:
     for relative in pages:
         assert (CANDIDATE / relative).is_file(), f"logbook page missing: {relative}"
     required_slugs = {
-        "pages/00-current-execution/page.md",
-        "pages/01-current-claim-1/page.md",
-        "pages/02-current-claim-2/page.md",
-        "pages/03-current-claim-3/page.md",
-        "pages/04-current-claim-4/page.md",
-        "pages/05-current-claim-5/page.md",
-        "pages/06-current-claim-6/page.md",
+        "pages/10-current-execution/page.md",
+        "pages/11-current-claim-1/page.md",
+        "pages/12-current-claim-2/page.md",
+        "pages/13-current-claim-3/page.md",
+        "pages/14-current-claim-4/page.md",
+        "pages/15-current-claim-5/page.md",
+        "pages/16-current-claim-6/page.md",
         "pages/claim-contract-results/page.md",
         "pages/release-evidence/page.md",
         "pages/release-manifest/page.md",
     }
     assert required_slugs <= set(pages), "new evidence pages are not reachable"
-    assert pages[1:8] == sorted(required_slugs)[:7], (
+    expected_current = [
+        "pages/10-current-execution/page.md",
+        *[
+            f"pages/{claim + 10:02d}-current-claim-{claim}/page.md"
+            for claim in range(1, 7)
+        ],
+    ]
+    assert pages[1:8] == expected_current, (
         "current executed-evidence pages are not first after the index"
     )
     return len(pages)
@@ -146,7 +172,7 @@ def check_claim_evidence() -> dict[str, int]:
         for raw_path in claim_dir.glob("raw_*.csv"):
             raw_rows += max(0, len(raw_path.read_text(encoding="utf-8").splitlines()) - 1)
     assert controls == 18, f"expected 18 rejected controls, observed {controls}"
-    assert raw_rows == 2331, f"expected 2331 raw rows, observed {raw_rows}"
+    assert raw_rows == 2349, f"expected 2349 raw rows, observed {raw_rows}"
     return {"claims": 6, "raw_rows": raw_rows, "rejected_controls": controls}
 
 
@@ -155,7 +181,7 @@ def check_upload_payloads() -> int:
     assert allowlisted == sorted(set(allowlisted)), "allowlist is not sorted and unique"
     assert allowlisted, "empty upload allowlist"
 
-    protected = parse_manifest(PROTECTED_MANIFEST)
+    protected = parse_manifest(PUBLISHED_PROTECTED_MANIFEST)
     expected_changed: set[str] = set()
     metadata = {
         ALLOWLIST.relative_to(CANDIDATE).as_posix(),

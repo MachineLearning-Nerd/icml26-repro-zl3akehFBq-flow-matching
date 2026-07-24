@@ -15,4 +15,38 @@ tags:
 
 # Repro - Diffusion Flow Matching: Dimension-Improved KL Bounds
 
-An open experiment logbook, published with [Trackio](https://github.com/gradio-app/trackio).
+## Current verification — evaluator start here
+
+This revision supersedes the rejected three-dimensional baseline with one
+fail-closed CPU command covering all six paper claims. Start with the
+[current evidence index](pages/index.md), then open each claim page. Every
+page displays its important numerical output inline and directly links the
+executable code, pinned environment, raw CSV, checker, negative control,
+certificate, assumptions, runtime, and limitations in this same revision.
+
+Fixed command:
+
+```bash
+uv sync --frozen && uv run --frozen python repro/src/verify_fm.py
+```
+
+The scientific evidence run was
+`cc1f0ac1-c742-45ef-b58b-0d329a3ae394` at Git SHA
+`6915a6b848e070fc2497b46fc64d9011622023eb` on an 8-logical-core Apple
+arm64 CPU. It completed with exit 0 in 35.96 verifier seconds. No GPU was
+used. All deliberately corrupted controls were rejected; any failed
+acceptance check raises and exits nonzero.
+
+The universal theorem statements are not inferred from finite Gaussian
+examples. Claims 1–4 pair exact-family corroboration with independent symbolic
+rate/decomposition certificates; Claims 5–6 additionally have general
+pointwise calculus/IBP certificates. Each page states the remaining proof
+scope explicitly.
+
+## Historical rejected baseline
+
+The old pages remain byte-for-byte available for provenance, but their
+ImportError, `c2=c1`, arbitrary thresholds, and obsolete “6/6 PASS” conclusion
+are not the current verifier. They are labeled **Historical rejected
+baseline** in navigation. Current executable source:
+[repro/src/verify_fm.py](repro/src/verify_fm.py).
