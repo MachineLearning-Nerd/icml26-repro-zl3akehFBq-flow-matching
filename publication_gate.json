@@ -8,10 +8,16 @@
   "official_score": "5/12",
   "current_judged_revision": "22e4c6ccfea63d39df4fd57db0ddacb2a505b040",
   "second_candidate_evidence_run": "0a539277-4fa4-4894-8623-a823aeaf193b",
+  "second_candidate_regression_run": "35859b3d-6244-4e21-91bc-95a0b8582462",
+  "second_candidate_regression_git_sha": "116e6f6fade7dc7b11a414668d9540bb9563cc8f",
+  "second_candidate_regression_duration_seconds": 30,
+  "second_candidate_regression_log_bytes": 476941,
   "second_candidate_parent_paths_preserved": 79,
   "second_candidate_non_logbook_paths_byte_identical": 78,
   "second_candidate_upload_paths": 10,
   "second_candidate_delete_operations": 0,
+  "second_candidate_upload_allowlist_sha256": "db4710359514224c90f0b19b90e3ad6839d6137157777560bebf1eb64005286a",
+  "second_candidate_text_manifest_sha256": "56898cee20be5ab288aa528b87ff9e98434df7ce601eeb6d1e85109589a423d4",
   "second_candidate_published": false,
   "requires_explicit_publication_approval": true
 }

@@ -70,6 +70,17 @@ table, H3/H6/H7 constants, the product-coupling block identities, and the
 nonzero integration-by-parts quadrature. The old pages remain reachable but are
 explicitly titled `LEGACY judged baseline`.
 
+The cumulative release regression
+`35859b3d-6244-4e21-91bc-95a0b8582462` then cloned commit
+`116e6f6fade7dc7b11a414668d9540bb9563cc8f`, completed in 30 seconds
+(22.708 seconds inside the verifier), and captured 476,941 bytes. It reproduced
+all 2,331 checked rows, rejected all 18 negative controls, validated the seven
+current pages, and confirmed that the candidate adds ten text paths with zero
+deletions. The exact allowlist SHA-256 is
+`db4710359514224c90f0b19b90e3ad6839d6137157777560bebf1eb64005286a`;
+the text-manifest SHA-256 is
+`56898cee20be5ab288aa528b87ff9e98434df7ce601eeb6d1e85109589a423d4`.
+
 ## Evidence, claim by claim
 
 | Claim | Paper statement tested | Observed evidence | Assessment |

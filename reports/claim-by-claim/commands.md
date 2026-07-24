@@ -178,5 +178,21 @@ orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
 
 The executed-evidence run cloned
 `7e3ab5c3a71ac38f1d14a4722e2abbe468fe8fd4`, completed in 50 seconds, and
-captured 476,391 bytes. The second candidate remains unpublished pending its
-final regression and explicit release approval.
+captured 476,391 bytes.
+
+```bash
+orx exp run 117124a0-d6c4-41fc-8701-f14e44dc9d0d --backend local
+orx exp wait 117124a0-d6c4-41fc-8701-f14e44dc9d0d --timeout 480
+orx logs 35859b3d-6244-4e21-91bc-95a0b8582462 --head --bytes 18000
+orx logs 35859b3d-6244-4e21-91bc-95a0b8582462 --bytes 12000
+orx create-experiment e6e79c00-6b6b-435d-9a5c-1f049d1e0226 \
+  --title "Final second-release presentation gate" \
+  --parent 117124a0-d6c4-41fc-8701-f14e44dc9d0d
+```
+
+The cumulative second-candidate run cloned
+`116e6f6fade7dc7b11a414668d9540bb9563cc8f`, completed in 30 seconds
+(22.708 seconds inside the verifier), and captured 476,941 bytes. It reproduced
+all six VERIFIED outcomes and rejected all 18 negative controls. The candidate
+remains unpublished pending the final presentation-child regression and
+explicit release approval.
