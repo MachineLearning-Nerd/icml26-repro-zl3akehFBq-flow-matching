@@ -21,6 +21,8 @@ from typing import Any
 
 import sympy as sp
 
+from proof_certificates import write_certificates
+
 
 ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT = ROOT / ".openresearch" / "artifacts" / "claim_1"
@@ -572,9 +574,107 @@ def claim3_complexity_rows() -> list[dict[str, float | int]]:
     return rows
 
 
+def uniform_bridge_kl(d: int, steps: int, delta: float) -> float:
+    """Observed exact KL for a uniform grid ending at t=1-delta.
+
+    This is evaluated from the Euler covariance recurrence and does not use a
+    theorem-bound-selected resource budget.
+    """
+    step = (1.0 - delta) / steps
+    t = 0.0
+    variance = 1.0
+    for _ in range(steps):
+        coefficient = 1.0 - step / (1.0 - t)
+        variance = coefficient**2 * variance + 2.0 * step
+        t += step
+    target_variance = 1.0 - (1.0 - delta) ** 2
+    return 0.5 * d * (
+        target_variance / variance
+        - 1.0
+        + math.log(variance / target_variance)
+    )
+
+
+def _first_hit(predicate: Any, maximum: int = 262_144) -> int:
+    """Smallest positive integer accepted by a monotone observed metric."""
+    high = 1
+    while high < maximum and not predicate(high):
+        high *= 2
+    if not predicate(high):
+        raise AssertionError(f"no observed first hit through resource={high}")
+    low = 0
+    while low + 1 < high:
+        middle = (low + high) // 2
+        if predicate(middle):
+            high = middle
+        else:
+            low = middle
+    return high
+
+
+def claim3_first_hit_rows() -> list[dict[str, float | int]]:
+    """Independently measure minimum work needed to hit exact KL targets."""
+    rows: list[dict[str, float | int]] = []
+    for d in (1, 16, 256):
+        for delta in (2.0**-3, 2.0**-5, 2.0**-7):
+            for tolerance_per_dimension in (1e-3, 1e-4):
+                tolerance = tolerance_per_dimension * d
+                uniform_steps = _first_hit(
+                    lambda n: uniform_bridge_kl(d, n, delta) <= tolerance
+                )
+                nonuniform_half_steps = _first_hit(
+                    lambda m: float(
+                        theorem3_schedule_row(d, m, delta)[
+                            "kl_target_to_euler"
+                        ]
+                    )
+                    <= tolerance
+                )
+                nonuniform = theorem3_schedule_row(
+                    d, nonuniform_half_steps, delta
+                )
+                rows.append(
+                    {
+                        "dimension": d,
+                        "requested_delta": delta,
+                        "kl_tolerance_per_dimension": tolerance_per_dimension,
+                        "uniform_first_hit_steps": uniform_steps,
+                        "uniform_first_hit_kl": uniform_bridge_kl(
+                            d, uniform_steps, delta
+                        ),
+                        "uniform_previous_kl": (
+                            uniform_bridge_kl(d, uniform_steps - 1, delta)
+                            if uniform_steps > 1
+                            else float("inf")
+                        ),
+                        "nonuniform_first_hit_half_steps": nonuniform_half_steps,
+                        "nonuniform_first_hit_total_steps": int(
+                            nonuniform["total_steps"]
+                        ),
+                        "nonuniform_first_hit_kl": float(
+                            nonuniform["kl_target_to_euler"]
+                        ),
+                        "nonuniform_previous_kl": (
+                            float(
+                                theorem3_schedule_row(
+                                    d, nonuniform_half_steps - 1, delta
+                                )["kl_target_to_euler"]
+                            )
+                            if nonuniform_half_steps > 1
+                            else float("inf")
+                        ),
+                        "achieved_delta": float(nonuniform["achieved_delta"]),
+                        "uniform_to_nonuniform_work_ratio": uniform_steps
+                        / int(nonuniform["total_steps"]),
+                    }
+                )
+    return rows
+
+
 def verify_claim3(
     schedule_rows: list[dict[str, float | int]],
     complexity_rows: list[dict[str, float | int]],
+    first_hit_rows: list[dict[str, float | int]],
 ) -> dict[str, Any]:
     checks: dict[str, bool] = {
         "schedule_identity": all(
@@ -596,6 +696,24 @@ def verify_claim3(
             for row in complexity_rows
             if float(row["delta"]) <= 2.0**-5
         ),
+        "observed_first_hits_reach_target": all(
+            float(row["uniform_first_hit_kl"])
+            <= float(row["kl_tolerance_per_dimension"]) * int(row["dimension"])
+            and float(row["nonuniform_first_hit_kl"])
+            <= float(row["kl_tolerance_per_dimension"]) * int(row["dimension"])
+            for row in first_hit_rows
+        ),
+        "observed_previous_resources_miss_target": all(
+            float(row["uniform_previous_kl"])
+            > float(row["kl_tolerance_per_dimension"]) * int(row["dimension"])
+            and float(row["nonuniform_previous_kl"])
+            > float(row["kl_tolerance_per_dimension"]) * int(row["dimension"])
+            for row in first_hit_rows
+        ),
+        "observed_nonuniform_work_advantage": all(
+            float(row["uniform_to_nonuniform_work_ratio"]) > 1.0
+            for row in first_hit_rows
+        ),
     }
     for d in (1, 8, 64, 256):
         ratios = [
@@ -615,6 +733,10 @@ def verify_claim3(
         "theorem3_coefficient_over_d3_limit": str(d3_limit),
         "d3_verified": not d3_limit.has(d),
         "implicit_schedule_solution": "1-t_{M+j}=(1/2)(1+h)^(-j)",
+        "primary_work_evidence": (
+            "binary-searched first hit of exact Euler KL; no theorem formula "
+            "selects either resource budget"
+        ),
     }
     checks["independent_d3"] = bool(independent["d3_verified"])
     failed = sorted(key for key, value in checks.items() if not value)
@@ -1349,6 +1471,7 @@ def verify_judge_pages() -> None:
 def main() -> int:
     started = time.perf_counter()
     verify_judge_pages()
+    certificates = write_certificates(ROOT)
     ARTIFACT.mkdir(parents=True, exist_ok=True)
     ARTIFACT2.mkdir(parents=True, exist_ok=True)
     ARTIFACT3.mkdir(parents=True, exist_ok=True)
@@ -1384,7 +1507,10 @@ def main() -> int:
         for delta_value in (0.25, 0.125, 0.0625, 0.03125)
     ]
     complexity_rows3 = claim3_complexity_rows()
-    verification3 = verify_claim3(schedule_rows3, complexity_rows3)
+    first_hit_rows3 = claim3_first_hit_rows()
+    verification3 = verify_claim3(
+        schedule_rows3, complexity_rows3, first_hit_rows3
+    )
     negative3 = claim3_negative_controls()
     rows4 = [
         exact_correlated_w2(d, steps, epsilon, rho_value)
@@ -1447,6 +1573,7 @@ def main() -> int:
     runtime_path2 = ARTIFACT2 / "runtime.json"
     schedule_path3 = ARTIFACT3 / "raw_schedule.csv"
     complexity_path3 = ARTIFACT3 / "raw_complexity.csv"
+    first_hit_path3 = ARTIFACT3 / "raw_first_hit.csv"
     checker_path3 = ARTIFACT3 / "independent_checker_output.json"
     negative_path3 = ARTIFACT3 / "negative_control_output.json"
     runtime_path3 = ARTIFACT3 / "runtime.json"
@@ -1482,6 +1609,7 @@ def main() -> int:
     )
     write_csv(schedule_rows3, schedule_path3)
     write_csv(complexity_rows3, complexity_path3)
+    write_csv(first_hit_rows3, first_hit_path3)
     checker_path3.write_text(
         json.dumps(verification3, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -1563,9 +1691,10 @@ def main() -> int:
                 "verdict": "VERIFIED",
                 "basis": (
                     "The implicit schedule h_k=h min(t_k,1-t_k) is implemented "
-                    "exactly. The displayed early-stopping dependence changes "
-                    "from delta^-4 to log(1/delta), yielding lower bound-certified "
-                    "work near the endpoint while preserving O(d^3)."
+                    "exactly. Independently binary-searched exact-KL first hits "
+                    "measure the minimum uniform and nonuniform work without "
+                    "selecting resources from the claimed formula. A symbolic "
+                    "certificate derives the log(1/delta) and O(d^3) consequences."
                 ),
             },
             "claim_4": {
@@ -1640,6 +1769,12 @@ def main() -> int:
         f"{[round(float(row['uniform_to_nonuniform_work_ratio']), 2) for row in smallest_delta_rows]}"
     )
     print(
+        f"Observed first-hit rows={len(first_hit_rows3)}; "
+        "uniform/nonuniform work ratio range="
+        f"[{min(float(row['uniform_to_nonuniform_work_ratio']) for row in first_hit_rows3):.3g}, "
+        f"{max(float(row['uniform_to_nonuniform_work_ratio']) for row in first_hit_rows3):.3g}]"
+    )
+    print(
         f"Negative controls={negative3['observed_rejections']}/"
         f"{negative3['expected_rejections']} rejected"
     )
@@ -1705,6 +1840,7 @@ def main() -> int:
         ARTIFACT3 / "method.md",
         schedule_path3,
         complexity_path3,
+        first_hit_path3,
         checker_path3,
         negative_path3,
         runtime_path3,
@@ -1737,6 +1873,14 @@ def main() -> int:
         runtime_path6,
         ARTIFACT6 / "EVAL.md",
         ARTIFACT6 / "limitations.md",
+        *(
+            ROOT
+            / ".openresearch"
+            / "artifacts"
+            / f"claim_{claim_id}"
+            / "universal_certificate.json"
+            for claim_id in range(1, 7)
+        ),
     ):
         emit_file(path)
     return 0
