@@ -205,10 +205,16 @@ def build_certificates() -> dict[str, dict[str, Any]]:
     return certs
 
 
-def write_certificates(root: Path) -> dict[str, dict[str, Any]]:
+def write_certificates(
+    root: Path,
+    artifact_root: Path | None = None,
+    claim3_directory: str = "claim_3",
+) -> dict[str, dict[str, Any]]:
     certificates = build_certificates()
     for claim, certificate in certificates.items():
-        path = root / ".openresearch" / "artifacts" / claim / "universal_certificate.json"
+        base = artifact_root or root / ".openresearch" / "artifacts"
+        directory = claim3_directory if claim == "claim_3" else claim
+        path = base / directory / "universal_certificate.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(certificate, indent=2, sort_keys=True) + "\n")
     return certificates

@@ -25,18 +25,28 @@ from evaluator_gate import check_visible_artifact
 from proof_certificates import write_certificates
 
 
-ROOT = Path(__file__).resolve().parents[2]
-VISIBLE_ROOT = (
-    ROOT / "hf_space_candidate"
-    if (ROOT / "hf_space_candidate").is_dir()
-    else ROOT
+SCRIPT_ROOT = Path(__file__).resolve().parents[2]
+ROOT = (
+    SCRIPT_ROOT / "hf_space_candidate"
+    if (SCRIPT_ROOT / ".openresearch" / "validate_published_layout").is_file()
+    else SCRIPT_ROOT
 )
-ARTIFACT = ROOT / ".openresearch" / "artifacts" / "claim_1"
-ARTIFACT2 = ROOT / ".openresearch" / "artifacts" / "claim_2"
-ARTIFACT3 = ROOT / ".openresearch" / "artifacts" / "claim_3"
-ARTIFACT4 = ROOT / ".openresearch" / "artifacts" / "claim_4"
-ARTIFACT5 = ROOT / ".openresearch" / "artifacts" / "claim_5"
-ARTIFACT6 = ROOT / ".openresearch" / "artifacts" / "claim_6"
+REPOSITORY_LAYOUT = (ROOT / "hf_space_candidate").is_dir()
+VISIBLE_ROOT = ROOT / "hf_space_candidate" if REPOSITORY_LAYOUT else ROOT
+ARTIFACT_BASE = (
+    ROOT / ".openresearch" / "artifacts"
+    if REPOSITORY_LAYOUT
+    else ROOT / "evidence"
+)
+ARTIFACT = ARTIFACT_BASE / "claim_1"
+ARTIFACT2 = ARTIFACT_BASE / "claim_2"
+ARTIFACT3 = ARTIFACT_BASE / (
+    "claim_3" if REPOSITORY_LAYOUT else "claim_3_first_hit"
+)
+ARTIFACT4 = ARTIFACT_BASE / "claim_4"
+ARTIFACT5 = ARTIFACT_BASE / "claim_5"
+ARTIFACT6 = ARTIFACT_BASE / "claim_6"
+SOURCE_ARTIFACT = ARTIFACT_BASE / "source" / "paper_source.json"
 FIXED_COMMAND = "uv sync --frozen && uv run --frozen python repro/src/verify_fm.py"
 DIMENSIONS = (1, 2, 4, 8, 16, 32, 64, 128, 256)
 STEP_COUNTS = (8, 16, 32, 64, 128, 256, 512)
@@ -1425,9 +1435,18 @@ def sha256(path: Path) -> str:
 
 
 def git_sha() -> str:
-    return subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-    ).strip()
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return (
+            "not-a-git-checkout; evidence-run="
+            "6915a6b848e070fc2497b46fc64d9011622023eb"
+        )
 
 
 def write_csv(rows: list[dict[str, float | int]], path: Path) -> None:
@@ -1481,7 +1500,11 @@ def main() -> int:
     started = time.perf_counter()
     verify_judge_pages()
     evaluator_visibility = check_visible_artifact(ROOT)
-    certificates = write_certificates(ROOT)
+    certificates = write_certificates(
+        ROOT,
+        ARTIFACT_BASE,
+        "claim_3" if REPOSITORY_LAYOUT else "claim_3_first_hit",
+    )
     ARTIFACT.mkdir(parents=True, exist_ok=True)
     ARTIFACT2.mkdir(parents=True, exist_ok=True)
     ARTIFACT3.mkdir(parents=True, exist_ok=True)
@@ -1830,7 +1853,7 @@ def main() -> int:
 
     for path in (
         *JUDGE_PAGES,
-        ROOT / ".openresearch" / "artifacts" / "source" / "paper_source.json",
+        SOURCE_ARTIFACT,
         ARTIFACT / "claim_contract.json",
         ARTIFACT / "source_audit.md",
         ARTIFACT / "method.md",
@@ -1889,10 +1912,8 @@ def main() -> int:
         ARTIFACT6 / "EVAL.md",
         ARTIFACT6 / "limitations.md",
         *(
-            ROOT
-            / ".openresearch"
-            / "artifacts"
-            / f"claim_{claim_id}"
+            ARTIFACT_BASE
+            / ("claim_3_first_hit" if claim_id == 3 and not REPOSITORY_LAYOUT else f"claim_{claim_id}")
             / "universal_certificate.json"
             for claim_id in range(1, 7)
         ),

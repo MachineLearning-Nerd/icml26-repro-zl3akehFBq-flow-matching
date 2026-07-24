@@ -1,0 +1,2 @@
+This committed validation switch makes the unchanged fixed command execute
+against hf_space_candidate/ as if it were an exact downloaded Space root.
