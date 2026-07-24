@@ -1,6 +1,7 @@
 README.md
 evidence/blind_review_round1.md
 evidence/blind_review_round2.md
+evidence/blind_review_round3.md
 evidence/claim_1/universal_certificate.json
 evidence/claim_2/universal_certificate.json
 evidence/claim_3_first_hit/EVAL.md

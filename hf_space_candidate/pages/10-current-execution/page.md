@@ -38,6 +38,7 @@ CLAIM 6: VERIFIED — 27 IBP rows; maximum residual=2.22e-16
 - [Six-row visibility matrix](../../evidence/evaluator_visibility_matrix.csv)
 - [Blind-review round 1](../../evidence/blind_review_round1.md)
 - [Blind-review round 2 and resolved findings](../../evidence/blind_review_round2.md)
+- [Blind-review round 3 and file-access ledger](../../evidence/blind_review_round3.md)
 
 The command is fail-closed: failed checks raise `AssertionError`; the top-level
 exception path re-raises and exits nonzero. Negative controls invert or remove

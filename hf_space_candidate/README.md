@@ -45,10 +45,13 @@ rate/decomposition certificates; Claims 5–6 additionally have general
 pointwise calculus/IBP certificates. Each page states the remaining proof
 scope explicitly.
 
-A strict evaluator-blind review still forecasts **6/12**, because this artifact
+A strict evaluator-blind review of the exact proposed upload forecasts
+**6/12** with high confidence, because this artifact
 does not contain complete formal stochastic proofs of the universal theorems.
 That limitation is explicit; local `VERIFIED` means the machine-checkable
 claim contract passed, not that a live evaluator must award full credit.
+The [review and complete file-access ledger](evidence/blind_review_round3.md)
+are preserved in this revision.
 
 ## Historical rejected baseline
 
