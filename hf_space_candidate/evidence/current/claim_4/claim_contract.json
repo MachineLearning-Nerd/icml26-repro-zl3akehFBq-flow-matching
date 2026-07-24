@@ -1,0 +1,21 @@
+{
+  "claim_id": 4,
+  "claim_text": "Under H5, H2, H3, H6, and H7, Theorem 4 bounds W2 by a drift term epsilon plus a discretization term of order sqrt(h) sqrt(d^3).",
+  "family": {
+    "coupling": "joint standard Gaussian endpoints with Cov(X0,X1)=rho I_d",
+    "rho": [0.0, 0.25, 0.5, 0.75],
+    "dimensions": [1, 2, 4, 8, 16, 32, 64, 128, 256],
+    "steps": [8, 16, 32, 64, 128, 256, 512],
+    "epsilon": [0.0, 0.02, 0.04, 0.08]
+  },
+  "acceptance_criteria": [
+    "H3, H6, and H7 are certified with explicit Gaussian constants.",
+    "H5 equals epsilon exactly for the constant drift perturbation.",
+    "Exact W2 decreases under grid refinement for every d and rho.",
+    "The endpoint mean contribution is linear in epsilon.",
+    "An independent matrix-square-root checker matches exact W2.",
+    "SymPy verifies the displayed dimension term is O(sqrt(d^3)).",
+    "All negative controls are rejected."
+  ],
+  "fail_policy": "Any failed criterion exits nonzero."
+}

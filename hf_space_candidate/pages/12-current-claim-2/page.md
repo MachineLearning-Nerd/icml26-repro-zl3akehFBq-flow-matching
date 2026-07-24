@@ -67,21 +67,21 @@ strict and gives exact-family corroboration; it does not alone prove the
 universal stochastic inequality. The certificate covers the displayed rate
 and assumption logic.
 
-**Git SHA:** `6915a6b848e070fc2497b46fc64d9011622023eb`.
-**CPU/runtime:** Apple arm64, 8 logical CPUs, 35.957 verifier seconds, no GPU,
+**Git SHA:** `4d6a75b59e359f03b8836d1e7488910eda66b84a`.
+**CPU/runtime:** Apple arm64, 8 logical CPUs, 29.645 verifier seconds, no GPU,
 no stochastic seeds. **Fixed command:**
 `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py`.
 
 **Executable source and evidence:** [verifier](../../repro/src/verify_fm.py),
 [certificate code](../../repro/src/proof_certificates.py),
 [pyproject](../../pyproject.toml), [uv.lock](../../uv.lock),
-[claim contract](../../evidence/claim_2/claim_contract.json),
-[source audit](../../evidence/claim_2/source_audit.md),
-[method](../../evidence/claim_2/method.md),
-[raw CSV](../../evidence/claim_2/raw_results.csv),
-[checker output](../../evidence/claim_2/independent_checker_output.json),
-[negative-control output](../../evidence/claim_2/negative_control_output.json),
-[universal certificate](../../evidence/claim_2/universal_certificate.json),
-[runtime](../../evidence/claim_2/runtime.json),
-[evaluation](../../evidence/claim_2/EVAL.md), and
-[limitations](../../evidence/claim_2/limitations.md).
+[claim contract](../../evidence/current/claim_2/claim_contract.json),
+[source audit](../../evidence/current/claim_2/source_audit.md),
+[method](../../evidence/current/claim_2/method.md),
+[raw CSV](../../evidence/current/claim_2/raw_results.csv),
+[checker output](../../evidence/current/claim_2/independent_checker_output.json),
+[negative-control output](../../evidence/current/claim_2/negative_control_output.json),
+[universal certificate](../../evidence/current/claim_2/universal_certificate.json),
+[runtime](../../evidence/current/claim_2/runtime.json),
+[evaluation](../../evidence/current/claim_2/EVAL.md), and
+[limitations](../../evidence/current/claim_2/limitations.md).

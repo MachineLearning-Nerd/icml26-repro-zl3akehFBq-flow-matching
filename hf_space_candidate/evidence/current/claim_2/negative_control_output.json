@@ -1,0 +1,37 @@
+{
+  "expected_rejections": 3,
+  "observed_rejections": 3,
+  "outcomes": [
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "requires_positive_density": true,
+        "support_lebesgue_measure": 0.0
+      },
+      "name": "pretend_singular_joint_satisfies_H3",
+      "observed": "REJECTED",
+      "reason": "R^d x {0} has zero 2d-dimensional Lebesgue measure."
+    },
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "mutated_delta": 0.0,
+        "valid_interval": "(0,1/2)"
+      },
+      "name": "remove_early_stopping_delta_zero",
+      "observed": "REJECTED",
+      "reason": "The exact target variance is zero and Theorem 2 requires 0<delta<1/2."
+    },
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "conditional_score_l8": 3.2813299958874285,
+        "full_joint_score_l8": "Infinity"
+      },
+      "name": "replace_conditional_score_with_full_joint_score",
+      "observed": "REJECTED",
+      "reason": "The full joint has no Lebesgue density or L8 score."
+    }
+  ],
+  "passed": true
+}

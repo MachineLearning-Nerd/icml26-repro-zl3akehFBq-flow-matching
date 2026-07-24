@@ -1,0 +1,17 @@
+{
+  "certificate_kind": "symbolic_schedule_solution_and_rate_derivation",
+  "derivation": [
+    "after 1/2, t_{k+1}=t_k+h(1-t_{k+1})",
+    "therefore 1-t_{M+j}=(1/2)(1+h)^(-j)",
+    "j=ceil(log(1/(2delta))/log(1+h))=O(h^-1 log(1/delta))",
+    "with S_cond,8^4=O(d^2), every displayed dimension factor is O(d^3)"
+  ],
+  "normalized_limit": "(C*h**(9/8) + C*h + h**(9/8) - h*log(delta) + h)/h",
+  "paper_premise": "h_k=h through 1/2, then h_k=h min(t_k,1-t_k); KL_delta includes h d^3 log(1/delta)",
+  "scope": "The resource advantage is tested independently by observed first-hit KL searches; no formula-selected budget is used as the primary empirical evidence.",
+  "universal_variables": [
+    "d>=1",
+    "0<h<=1",
+    "0<delta<1/2"
+  ]
+}

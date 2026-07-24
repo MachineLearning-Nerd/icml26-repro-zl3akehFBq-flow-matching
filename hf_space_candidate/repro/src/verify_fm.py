@@ -36,17 +36,21 @@ VISIBLE_ROOT = ROOT / "hf_space_candidate" if REPOSITORY_LAYOUT else ROOT
 ARTIFACT_BASE = (
     ROOT / ".openresearch" / "artifacts"
     if REPOSITORY_LAYOUT
-    else ROOT / "evidence"
+    else ROOT / "evidence" / "current"
 )
 ARTIFACT = ARTIFACT_BASE / "claim_1"
 ARTIFACT2 = ARTIFACT_BASE / "claim_2"
 ARTIFACT3 = ARTIFACT_BASE / (
-    "claim_3" if REPOSITORY_LAYOUT else "claim_3_first_hit"
+    "claim_3"
 )
 ARTIFACT4 = ARTIFACT_BASE / "claim_4"
 ARTIFACT5 = ARTIFACT_BASE / "claim_5"
 ARTIFACT6 = ARTIFACT_BASE / "claim_6"
-SOURCE_ARTIFACT = ARTIFACT_BASE / "source" / "paper_source.json"
+SOURCE_ARTIFACT = (
+    ROOT / ".openresearch" / "artifacts" / "source" / "paper_source.json"
+    if REPOSITORY_LAYOUT
+    else ROOT / "evidence" / "source" / "paper_source.json"
+)
 FIXED_COMMAND = "uv sync --frozen && uv run --frozen python repro/src/verify_fm.py"
 DIMENSIONS = (1, 2, 4, 8, 16, 32, 64, 128, 256)
 STEP_COUNTS = (8, 16, 32, 64, 128, 256, 512)
@@ -1576,7 +1580,7 @@ def git_sha() -> str:
     except (subprocess.CalledProcessError, FileNotFoundError):
         return (
             "not-a-git-checkout; evidence-run="
-            "6915a6b848e070fc2497b46fc64d9011622023eb"
+            "4d6a75b59e359f03b8836d1e7488910eda66b84a"
         )
 
 
@@ -1634,7 +1638,7 @@ def main() -> int:
     certificates = write_certificates(
         ROOT,
         ARTIFACT_BASE,
-        "claim_3" if REPOSITORY_LAYOUT else "claim_3_first_hit",
+        "claim_3",
     )
     ARTIFACT.mkdir(parents=True, exist_ok=True)
     ARTIFACT2.mkdir(parents=True, exist_ok=True)
@@ -2044,7 +2048,7 @@ def main() -> int:
         ARTIFACT6 / "limitations.md",
         *(
             ARTIFACT_BASE
-            / ("claim_3_first_hit" if claim_id == 3 and not REPOSITORY_LAYOUT else f"claim_{claim_id}")
+            / f"claim_{claim_id}"
             / "universal_certificate.json"
             for claim_id in range(1, 7)
         ),

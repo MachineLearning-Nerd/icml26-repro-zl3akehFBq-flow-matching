@@ -1,0 +1,19 @@
+{
+  "claim_id": 3,
+  "claim_text": "Theorem 3's non-uniform schedule improves early-stopping convergence through logarithmic rather than inverse-fourth-power dependence on delta while retaining O(d^3) dimension complexity.",
+  "schedule": {
+    "first_half": "h_k=h=1/(2M) for k<=M",
+    "second_half": "h_k=h min(t_k,1-t_k) for k>M",
+    "implicit_solution": "for t_k>1/2, t_k=(t_{k-1}+h)/(1+h)"
+  },
+  "acceptance_criteria": [
+    "Every generated later step satisfies the theorem's implicit schedule identity.",
+    "The exact early-stopped Gaussian witness has finite nonnegative KL.",
+    "Binary search independently finds the minimum uniform and non-uniform work whose exact Euler KL reaches each fixed target.",
+    "Every immediately preceding resource misses its target, and non-uniform first-hit work is lower in all 18 cases.",
+    "Displayed-bound work is retained only as secondary context, not primary evidence.",
+    "The full Theorem 3 coefficient remains O(d^3), independently checked symbolically.",
+    "All negative controls are rejected."
+  ],
+  "fail_policy": "Any failed criterion exits nonzero."
+}

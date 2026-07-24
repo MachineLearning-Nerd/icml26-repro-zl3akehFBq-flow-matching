@@ -66,21 +66,21 @@ and the unrelated low-rank identity are rejected; acceptance exits
 orders are certified. The certificate does not mechanically reproduce every
 surrounding stochastic estimate in the paper's proof.
 
-**Git SHA:** `6915a6b848e070fc2497b46fc64d9011622023eb`.
-**CPU/runtime:** Apple arm64, 8 logical CPUs, 35.957 verifier seconds, no GPU,
+**Git SHA:** `4d6a75b59e359f03b8836d1e7488910eda66b84a`.
+**CPU/runtime:** Apple arm64, 8 logical CPUs, 29.645 verifier seconds, no GPU,
 no stochastic seeds. **Fixed command:**
 `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py`.
 
 **Executable source and evidence:** [verifier](../../repro/src/verify_fm.py),
 [certificate code](../../repro/src/proof_certificates.py),
 [pyproject](../../pyproject.toml), [uv.lock](../../uv.lock),
-[claim contract](../../evidence/claim_6/claim_contract.json),
-[source audit](../../evidence/claim_6/source_audit.md),
-[method](../../evidence/claim_6/method.md),
-[raw CSV](../../evidence/claim_6/raw_results.csv),
-[checker output](../../evidence/claim_6/independent_checker_output.json),
-[negative-control output](../../evidence/claim_6/negative_control_output.json),
-[universal certificate](../../evidence/claim_6/universal_certificate.json),
-[runtime](../../evidence/claim_6/runtime.json),
-[evaluation](../../evidence/claim_6/EVAL.md), and
-[limitations](../../evidence/claim_6/limitations.md).
+[claim contract](../../evidence/current/claim_6/claim_contract.json),
+[source audit](../../evidence/current/claim_6/source_audit.md),
+[method](../../evidence/current/claim_6/method.md),
+[raw CSV](../../evidence/current/claim_6/raw_results.csv),
+[checker output](../../evidence/current/claim_6/independent_checker_output.json),
+[negative-control output](../../evidence/current/claim_6/negative_control_output.json),
+[universal certificate](../../evidence/current/claim_6/universal_certificate.json),
+[runtime](../../evidence/current/claim_6/runtime.json),
+[evaluation](../../evidence/current/claim_6/EVAL.md), and
+[limitations](../../evidence/current/claim_6/limitations.md).

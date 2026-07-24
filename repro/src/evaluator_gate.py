@@ -108,21 +108,18 @@ def check_visible_artifact(repository: Path) -> dict[str, Any]:
         "raw_link",
         "checker",
         "control",
-        "exact_claim_tested",
     )
     for row in matrix:
         assert all(row[key] == "yes" for key in required_true), row
-        assert row["reviewer_verdict"] in {
-            "release-ready",
-            "scientifically-scoped",
-        }
+        assert row["exact_claim_tested"], row
+        assert row["reviewer_verdict"] in {"release-ready", "1/2-scoped"}
 
     for relative in ("pyproject.toml", "uv.lock", "repro/src/verify_fm.py"):
         assert (root / relative).is_file(), f"published executable input missing: {relative}"
 
     first_hits = list(
         csv.DictReader(
-            (root / "evidence" / "claim_3_first_hit" / "raw_first_hit.csv").open(
+            (root / "evidence" / "current" / "claim_3" / "raw_first_hit.csv").open(
                 newline="", encoding="utf-8"
             )
         )

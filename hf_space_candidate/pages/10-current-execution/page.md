@@ -8,10 +8,10 @@ but is not the current code.
 
 | Field | Recorded value |
 | --- | --- |
-| Run ID | `cc1f0ac1-c742-45ef-b58b-0d329a3ae394` |
-| Git SHA | `6915a6b848e070fc2497b46fc64d9011622023eb` |
+| Run ID | `8c10975f-a2f4-4176-b678-50a2d55aa962` |
+| Git SHA | `4d6a75b59e359f03b8836d1e7488910eda66b84a` |
 | Status | `done`, exit code 0 |
-| Verifier runtime | `35.95715512500101` seconds |
+| Verifier runtime | `29.64489712499926` seconds |
 | Hardware | local Apple arm64 CPU, 8 logical cores; no GPU |
 | Python | 3.12.11 |
 | Fixed command | `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py` |
@@ -37,6 +37,7 @@ CLAIM 6: VERIFIED — 27 IBP rows; maximum residual=2.22e-16
 - [Pinned project](../../pyproject.toml) and [exact lock](../../uv.lock)
 - [Six-row visibility matrix](../../evidence/evaluator_visibility_matrix.csv)
 - [Blind-review round 1](../../evidence/blind_review_round1.md)
+- [Blind-review round 2 and resolved findings](../../evidence/blind_review_round2.md)
 
 The command is fail-closed: failed checks raise `AssertionError`; the top-level
 exception path re-raises and exits nonzero. Negative controls invert or remove

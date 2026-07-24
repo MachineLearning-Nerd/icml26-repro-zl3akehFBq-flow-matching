@@ -31,6 +31,10 @@ The six-row [visibility matrix](../evidence/evaluator_visibility_matrix.csv)
 records whether code, inline data, raw data, checker, control, and exact claim
 are discoverable from these pages.
 
+The [primary-source claim and quantifier audit](../evidence/source/current-paper-claims.md)
+links the exact ar5iv theorem anchors, assumptions H1–H8, retrieval metadata,
+and response SHA-256.
+
 ## Historical rejected baseline
 
 These preserved pages are provenance only and are not the current verifier:

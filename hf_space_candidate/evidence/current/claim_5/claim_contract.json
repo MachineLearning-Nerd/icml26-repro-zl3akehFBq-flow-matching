@@ -1,0 +1,19 @@
+{
+  "claim_id": 5,
+  "claim_text": "Corollary 3 specializes Theorem 4 to pi=mu tensor nu*, replacing joint assumptions by H8 on the two marginals.",
+  "family": {
+    "coupling": "explicit product of unequal isotropic Gaussian marginals",
+    "source_sigma_target_sigma": [[0.5, 1.5], [0.75, 2.0], [1.0, 0.75], [2.0, 1.25]],
+    "dimensions": [1, 4, 16, 64, 256],
+    "steps": [8, 16, 32, 64, 128, 256, 512]
+  },
+  "acceptance_criteria": [
+    "Cross-covariance is zero and the joint log density factorizes.",
+    "Each marginal separately satisfies every H8 score, Hessian, and weak-log-concavity condition.",
+    "Lemma 1's joint score, Hessian, alpha, and M relations hold.",
+    "Exact W2 decreases under refinement for every marginal pair and dimension.",
+    "An independent matrix checker matches W2.",
+    "A correlated coupling negative control is rejected."
+  ],
+  "fail_policy": "Any failed criterion exits nonzero."
+}

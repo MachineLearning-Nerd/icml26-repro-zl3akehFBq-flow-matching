@@ -67,23 +67,23 @@ certificate covers the schedule solution and rate consequence of the paper's
 displayed inequality. Formula-selected work remains in `raw_complexity.csv`
 only as secondary source-context and is not the primary verification result.
 
-**Git SHA:** `6915a6b848e070fc2497b46fc64d9011622023eb`.
-**CPU/runtime:** Apple arm64, 8 logical CPUs, 35.957 verifier seconds, no GPU,
+**Git SHA:** `4d6a75b59e359f03b8836d1e7488910eda66b84a`.
+**CPU/runtime:** Apple arm64, 8 logical CPUs, 29.645 verifier seconds, no GPU,
 no stochastic seeds. **Fixed command:**
 `uv sync --frozen && uv run --frozen python repro/src/verify_fm.py`.
 
 **Executable source and evidence:** [verifier](../../repro/src/verify_fm.py),
 [certificate code](../../repro/src/proof_certificates.py),
 [pyproject](../../pyproject.toml), [uv.lock](../../uv.lock),
-[claim contract](../../evidence/claim_3_first_hit/claim_contract.json),
-[source audit](../../evidence/claim_3_first_hit/source_audit.md),
-[method](../../evidence/claim_3_first_hit/method.md),
-[observed first-hit CSV](../../evidence/claim_3_first_hit/raw_first_hit.csv),
-[schedule CSV](../../evidence/claim_3_first_hit/raw_schedule.csv),
-[secondary bound-context CSV](../../evidence/claim_3_first_hit/raw_complexity.csv),
-[checker output](../../evidence/claim_3_first_hit/independent_checker_output.json),
-[negative-control output](../../evidence/claim_3_first_hit/negative_control_output.json),
-[universal certificate](../../evidence/claim_3_first_hit/universal_certificate.json),
-[runtime](../../evidence/claim_3_first_hit/runtime.json),
-[evaluation](../../evidence/claim_3_first_hit/EVAL.md), and
-[limitations](../../evidence/claim_3_first_hit/limitations.md).
+[claim contract](../../evidence/current/claim_3/claim_contract.json),
+[source audit](../../evidence/current/claim_3/source_audit.md),
+[method](../../evidence/current/claim_3/method.md),
+[observed first-hit CSV](../../evidence/current/claim_3/raw_first_hit.csv),
+[schedule CSV](../../evidence/current/claim_3/raw_schedule.csv),
+[secondary bound-context CSV](../../evidence/current/claim_3/raw_complexity.csv),
+[checker output](../../evidence/current/claim_3/independent_checker_output.json),
+[negative-control output](../../evidence/current/claim_3/negative_control_output.json),
+[universal certificate](../../evidence/current/claim_3/universal_certificate.json),
+[runtime](../../evidence/current/claim_3/runtime.json),
+[evaluation](../../evidence/current/claim_3/EVAL.md), and
+[limitations](../../evidence/current/claim_3/limitations.md).

@@ -149,6 +149,21 @@ def build_certificates() -> dict[str, dict[str, Any]]:
     sx, sy, hxx, hyy, alpha_mu, alpha_nu = sp.symbols(
         "s_x s_y H_xx H_yy alpha_mu alpha_nu", real=True
     )
+    x_product, y_product = sp.symbols("x y", real=True)
+    mu = sp.Function("mu")
+    nu = sp.Function("nu")
+    log_product = sp.log(mu(x_product)) + sp.log(nu(y_product))
+    score_x_residual = sp.simplify(
+        sp.diff(log_product, x_product)
+        - sp.diff(sp.log(mu(x_product)), x_product)
+    )
+    score_y_residual = sp.simplify(
+        sp.diff(log_product, y_product)
+        - sp.diff(sp.log(nu(y_product)), y_product)
+    )
+    mixed_hessian_residual = sp.simplify(
+        sp.diff(log_product, x_product, y_product)
+    )
     certs["claim_5"] = {
         "certificate_kind": "general_pointwise_product_calculus",
         "universal_variables": [
@@ -160,11 +175,20 @@ def build_certificates() -> dict[str, dict[str, Any]]:
             "hessian": "Hess log pi=diag(Hess log mu,Hess log nu)",
             "mixed_hessian": "0",
             "weak_log_concavity": "alpha_pi=min(alpha_mu,alpha_nu)",
+            "weak_curvature_constant": "M_pi=2 max(M_mu,M_nu)",
         },
         "symbolic_checks": {
             "score_squared_adds": str(sp.expand(sx**2 + sy**2)),
             "block_hessian_trace_adds": str(sp.expand(hxx + hyy)),
             "alpha_rule": str(sp.Min(alpha_mu, alpha_nu)),
+            "score_x_residual": str(score_x_residual),
+            "score_y_residual": str(score_y_residual),
+            "mixed_hessian_residual": str(mixed_hessian_residual),
+            "all_pointwise_derivative_checks_zero": (
+                score_x_residual == 0
+                and score_y_residual == 0
+                and mixed_hessian_residual == 0
+            ),
         },
         "scope": (
             "These pointwise identities cover the arbitrary product coupling "
@@ -189,6 +213,19 @@ def build_certificates() -> dict[str, dict[str, Any]]:
         ),
         "symbolic_product_rule": str(
             sp.diff(sp.diff(kernel, y, 2) * density, y).expand()
+        ),
+        "symbolic_product_rule_residual": str(
+            sp.simplify(
+                sp.diff(sp.diff(kernel, y, 2) * density, y)
+                - (
+                    sp.diff(kernel, y, 3) * density
+                    + sp.diff(kernel, y, 2) * sp.diff(density, y)
+                )
+            )
+        ),
+        "boundary_certificate": (
+            "If [(d_y^2 K)pi]_-infinity^infinity=0, integrating the "
+            "product-rule residual gives the stated identity."
         ),
         "derivative_orders": {
             "before": 3,

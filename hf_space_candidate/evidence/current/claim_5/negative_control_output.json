@@ -1,0 +1,37 @@
+{
+  "expected_rejections": 3,
+  "observed_rejections": 3,
+  "outcomes": [
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "cross_covariance": 0.5,
+        "required": 0.0
+      },
+      "name": "correlated_joint_rho_half",
+      "observed": "REJECTED",
+      "reason": "Nonzero cross-covariance violates pi=mu tensor nu*."
+    },
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "mutated_metric": "KL",
+        "required_metric": "W2"
+      },
+      "name": "reuse_claim1_KL_metric",
+      "observed": "REJECTED",
+      "reason": "Corollary 3 specializes Theorem 4's W2 result, not KL."
+    },
+    {
+      "expected": "REJECTED",
+      "measured": {
+        "mutated_mixed_hessian": 0.25,
+        "required_product_mixed_hessian": 0.0
+      },
+      "name": "assert_marginal_conditions_without_block_check",
+      "observed": "REJECTED",
+      "reason": "The verifier requires Lemma 1 score, Hessian, and weak-concavity constants."
+    }
+  ],
+  "passed": true
+}
