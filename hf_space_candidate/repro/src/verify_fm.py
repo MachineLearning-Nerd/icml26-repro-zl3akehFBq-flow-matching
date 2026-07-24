@@ -406,33 +406,48 @@ def verify_claim2(
 
 
 def claim2_negative_controls() -> dict[str, Any]:
+    singular_support_lebesgue_measure = 0.0
+    mutated_h3_accepted = singular_support_lebesgue_measure > 0.0
+    delta_zero = 0.0
+    mutated_delta_accepted = 0.0 < delta_zero < 0.5
+    conditional_score_l8 = chi_square_eighth_moment(8) ** (1.0 / 8.0)
+    full_joint_score_l8 = math.inf
+    mutated_score_substitution_accepted = (
+        math.isfinite(conditional_score_l8)
+        and math.isfinite(full_joint_score_l8)
+    )
     outcomes = [
         {
             "name": "pretend_singular_joint_satisfies_H3",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": "ACCEPTED" if mutated_h3_accepted else "REJECTED",
+            "measured": {
+                "support_lebesgue_measure": singular_support_lebesgue_measure,
+                "requires_positive_density": True,
+            },
             "reason": "R^d x {0} has zero 2d-dimensional Lebesgue measure.",
         },
         {
             "name": "remove_early_stopping_delta_zero",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": "ACCEPTED" if mutated_delta_accepted else "REJECTED",
+            "measured": {"mutated_delta": delta_zero, "valid_interval": "(0,1/2)"},
             "reason": "The exact target variance is zero and Theorem 2 requires 0<delta<1/2.",
         },
         {
             "name": "replace_conditional_score_with_full_joint_score",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "ACCEPTED" if mutated_score_substitution_accepted else "REJECTED"
+            ),
+            "measured": {
+                "conditional_score_l8": conditional_score_l8,
+                "full_joint_score_l8": "Infinity",
+            },
             "reason": "The full joint has no Lebesgue density or L8 score.",
         },
     ]
-    # Machine checks for the two numerical/domain failures.
-    if not (0.0 < 0.0 < 0.5):
-        delta_zero_rejected = True
-    else:
-        delta_zero_rejected = False
-    singular_support_lebesgue_measure = 0.0
-    if not delta_zero_rejected or singular_support_lebesgue_measure != 0.0:
+    if any(item["observed"] != "REJECTED" for item in outcomes):
         raise AssertionError("Claim 2 negative control unexpectedly accepted")
     return {
         "passed": True,
@@ -763,6 +778,20 @@ def verify_claim3(
 
 def claim3_negative_controls() -> dict[str, Any]:
     old_result = {"uniform_kl": 0.0042, "nonuniform_kl": 0.0452}
+    h = 1.0 / 16.0
+    t_previous = 0.5
+    mutated_constant_step = h
+    mutated_next_t = t_previous + mutated_constant_step
+    schedule_residual = abs(
+        mutated_constant_step - h * min(mutated_next_t, 1.0 - mutated_next_t)
+    )
+    delta_symbol = sp.symbols("delta", positive=True)
+    inverse_fourth_over_log_limit = sp.limit(
+        delta_symbol**-4 / sp.log(1 / delta_symbol),
+        delta_symbol,
+        0,
+        dir="+",
+    )
     outcomes = [
         {
             "name": "old_both_below_arbitrary_threshold",
@@ -777,13 +806,29 @@ def claim3_negative_controls() -> dict[str, Any]:
         {
             "name": "constant_step_mislabeled_nonuniform",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED" if schedule_residual > 1e-12 else "ACCEPTED"
+            ),
+            "measured": {
+                "mutated_step": mutated_constant_step,
+                "required_step": h * (1.0 - mutated_next_t),
+                "schedule_residual": schedule_residual,
+            },
             "reason": "Later steps must satisfy h_k=h min(t_k,1-t_k).",
         },
         {
             "name": "replace_log_delta_with_delta_minus_four",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED"
+                if inverse_fourth_over_log_limit == sp.oo
+                else "ACCEPTED"
+            ),
+            "measured": {
+                "limit_delta^-4_over_log(1/delta)": str(
+                    inverse_fourth_over_log_limit
+                )
+            },
             "reason": "This erases the theorem's accelerated endpoint dependence.",
         },
     ]
@@ -974,6 +1019,18 @@ def verify_claim4(rows: list[dict[str, float | int | bool]]) -> dict[str, Any]:
 
 def claim4_negative_controls() -> dict[str, Any]:
     old_w2 = [0.0175, 0.0027, 0.0099]
+    biased_row = exact_correlated_w2(16, 64, 0.08, 0.5)
+    unbiased_row = exact_correlated_w2(16, 64, 0.0, 0.5)
+    omitted_epsilon_effect = abs(
+        float(biased_row["w2"]) - float(unbiased_row["w2"])
+    )
+    mutated_alpha = float("nan")
+    mutated_hessian = math.inf
+    mutated_h6_h7_accepted = (
+        math.isfinite(mutated_alpha)
+        and mutated_alpha > 0
+        and math.isfinite(mutated_hessian)
+    )
     outcomes = [
         {
             "name": "old_w2_below_ten",
@@ -988,13 +1045,26 @@ def claim4_negative_controls() -> dict[str, Any]:
         {
             "name": "omit_H5_epsilon_term",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED" if omitted_epsilon_effect > 1e-6 else "ACCEPTED"
+            ),
+            "measured": {
+                "w2_epsilon_0": unbiased_row["w2"],
+                "w2_epsilon_0.08": biased_row["w2"],
+                "omitted_effect": omitted_epsilon_effect,
+            },
             "reason": "The exact endpoint mean has a positive component linear in epsilon.",
         },
         {
             "name": "uncertified_weak_log_concavity",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "ACCEPTED" if mutated_h6_h7_accepted else "REJECTED"
+            ),
+            "measured": {
+                "mutated_alpha": "NaN",
+                "mutated_hessian_norm": "Infinity",
+            },
             "reason": "The contract requires explicit alpha_pi>0 and finite Hessian norm.",
         },
     ]
@@ -1196,23 +1266,49 @@ def verify_claim5(rows: list[dict[str, float | int | bool]]) -> dict[str, Any]:
 
 
 def claim5_negative_controls() -> dict[str, Any]:
+    correlated_cross_covariance = 0.5
+    required_metric = "W2"
+    mutated_metric = "KL"
+    mutated_mixed_hessian = 0.25
     outcomes = [
         {
             "name": "correlated_joint_rho_half",
             "expected": "REJECTED",
-            "observed": "REJECTED" if 0.5 != 0.0 else "ACCEPTED",
+            "observed": (
+                "REJECTED"
+                if correlated_cross_covariance != 0.0
+                else "ACCEPTED"
+            ),
+            "measured": {
+                "cross_covariance": correlated_cross_covariance,
+                "required": 0.0,
+            },
             "reason": "Nonzero cross-covariance violates pi=mu tensor nu*.",
         },
         {
             "name": "reuse_claim1_KL_metric",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED" if mutated_metric != required_metric else "ACCEPTED"
+            ),
+            "measured": {
+                "mutated_metric": mutated_metric,
+                "required_metric": required_metric,
+            },
             "reason": "Corollary 3 specializes Theorem 4's W2 result, not KL.",
         },
         {
             "name": "assert_marginal_conditions_without_block_check",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED"
+                if abs(mutated_mixed_hessian) > 1e-15
+                else "ACCEPTED"
+            ),
+            "measured": {
+                "mutated_mixed_hessian": mutated_mixed_hessian,
+                "required_product_mixed_hessian": 0.0,
+            },
             "reason": "The verifier requires Lemma 1 score, Hessian, and weak-concavity constants.",
         },
     ]
@@ -1396,6 +1492,29 @@ def claim6_negative_controls(
         )
         for row in rows
     )
+    omitted_score_residuals: list[float] = []
+    for row in rows:
+        total_variance = float(row["coupling_sigma"]) ** 2 + 2.0 * float(row["s"])
+        offset = float(row["x"]) - float(row["coupling_mean"])
+        convolution_density = math.exp(
+            -(offset**2) / (2.0 * total_variance)
+        ) / math.sqrt(2.0 * math.pi * total_variance)
+        second_without_score = (
+            offset**2 / total_variance**2 - 1.0 / total_variance
+        ) * convolution_density
+        omitted_score_residuals.append(
+            abs(
+                float(row["direct_third_derivative_integral"])
+                - second_without_score
+            )
+        )
+    smallest_omitted_score_residual = min(omitted_score_residuals)
+    legacy_fields = {"score_norm_identity", "hessian_trace"}
+    required_fields = {
+        "direct_third_derivative_integral",
+        "transferred_second_derivative_score_integral",
+    }
+    legacy_missing_required_fields = sorted(required_fields - legacy_fields)
     outcomes = [
         {
             "name": "sign_flipped_integration_by_parts",
@@ -1406,13 +1525,25 @@ def claim6_negative_controls(
         {
             "name": "omit_coupling_score_after_transfer",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED"
+                if smallest_omitted_score_residual > 1e-5
+                else "ACCEPTED"
+            ),
+            "measured": {
+                "minimum_mutated_residual": smallest_omitted_score_residual
+            },
             "reason": "Integration by parts differentiates the coupling density.",
         },
         {
             "name": "old_low_rank_score_identity",
             "expected": "REJECTED",
-            "observed": "REJECTED",
+            "observed": (
+                "REJECTED" if legacy_missing_required_fields else "ACCEPTED"
+            ),
+            "measured": {
+                "missing_required_fields": legacy_missing_required_fields
+            },
             "reason": "E||grad V||^2=tr(H) does not test derivative transfer or d^4-to-d^3 scaling.",
         },
     ]
